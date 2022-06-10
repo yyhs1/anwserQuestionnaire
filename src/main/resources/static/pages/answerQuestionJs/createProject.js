@@ -1,7 +1,7 @@
 /**
  * Created by Amy on 2018/8/6.
  */
-var flag = true;
+var hasSameName = false;
 var projectName = '';
 var projectContent = '';
 
@@ -15,11 +15,28 @@ $(function () {
 function createProject() {
     projectName = $("#projectName").val();
     projectContent = $("#inputIntro").val();
+    hasSameName = false;
+
+    commonAjaxPost(false, '/queryProjectCountByName', {'projectName': projectName}, function (result) {
+        console.log(result);
+        if (result.code === "666") {
+            if (result.data.ret > 0) {
+                hasSameName = true;
+            } else {
+                hasSameName = false;
+            }
+        } else if (result.code === "20001") {
+            layer.msg("项目名称已存在，请更换名称", {icon: 2});
+        } else {
+            layer.msg(result.message, {icon: 2})
+        }
+    });
+
     createProjectRight();
 }
 
 function createProjectRight() {
-    if (flag == true) {
+    if (hasSameName === false) {
         if (projectName.trim() == '') {
             layer.msg('请完整填写项目名称')
         } else if (projectContent.trim() == '') {

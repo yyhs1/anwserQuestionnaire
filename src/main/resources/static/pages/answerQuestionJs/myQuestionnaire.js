@@ -10,14 +10,14 @@
      $("#ctl01_lblUserName").html(userName);
      getProjectQuest();
  });
- 
+
  //回车事件
  $(document).keydown(function (event) {
      if (event.keyCode === 13) {
          getProjectQuest();
      }
  });
- 
+
  // 查看项目及其包含的问卷列表
  function getProjectQuest() {
      var keyWord = $("#keyWord").val();
@@ -29,17 +29,17 @@
      };
      commonAjaxPost(true, url, data, getProjectQuestSuccess);
  }
- 
+
  // 查看项目及其包含的问卷列表成功回调
  function getProjectQuestSuccess(result) {
      console.log(result.code);
      if (result.code === "666") {
          var data = result.data;
          $("#panel-23802").empty();
- 
+
          //遍历多个项目
          var text = "";
- 
+
          if (data.length) {
              for (var i = 0; i < data.length; i++) {
                  var projectInfo = data[i];
@@ -60,13 +60,13 @@
                  text += "         </div>";
                  text += "";
                  text += "     </div>";
- 
+
                  if (i === 0) {
                      text += "     <div id=\"panel-element-" + projectInfo.id + "\" class=\"panel-collapse collapse in\">";
- 
+
                  } else {
                      text += "     <div id=\"panel-element-" + projectInfo.id + "\" class=\"panel-collapse collapse\">";
- 
+
                  }
                  text += "         <div class=\"panel-body\">";
                  text += "             <!--Anim pariatur cliche...-->";
@@ -80,11 +80,11 @@
              }
              //for循环结束
              $("#panel-23802").append(text);
- 
+
          } else {
              layer.msg("暂无符合条件的项目", {icon: 0})
          }
- 
+
      } else if (result.code === "333") {
          layer.msg(result.message, {icon: 2});
          setTimeout(function () {
@@ -93,13 +93,48 @@
      } else {
          layer.msg(result.message, {icon: 2})
      }
- 
+
  }
- 
- 
- 
+
+ // 项目是否包含正在开启中的问卷
+function isProjectHasOpenQuestionnaire(projectId) {
+    // debugger;
+    var url = '/isProjectHasOpenQuestionnaire';
+    var data = {
+        "id": projectId
+    };
+    let hasOpen = false;
+
+    commonAjaxPost(false, url, data, function (result) {
+        console.log(result);
+        if (result.code === "666") {
+            if (result.data.ret === true) {
+                layer.msg("该项目已经有开启的问卷，不能更改", {icon: 2});
+                hasOpen = true;
+            } else {
+                hasOpen = false;
+            }
+        } else if (result.code === "333") {
+            layer.msg(result.message, {icon: 2});
+            hasOpen = true;
+        } else {
+            hasOpen = false;
+        }
+    });
+
+    // debugger;
+    return hasOpen;
+}
+
+
  // 删除项目
  function deleteProject(projectId) {
+
+    if(isProjectHasOpenQuestionnaire(projectId)){
+        return;
+    }
+
+
      layer.confirm('您确认要删除此项目吗？', {
          btn: ['确定', '取消'] //按钮
      }, function () {
@@ -120,26 +155,33 @@
      }, function () {
      });
  }
- 
- 
+
+
  // 编辑项目，在问卷未发布的状态下才可以编辑项目信息
- function editProject(id, name, content) {
+ function editProject(projectId, name, content) {
+
+     if(isProjectHasOpenQuestionnaire(projectId)){
+         return;
+     }
+     // debugger;
+
+
      deleteCookie("projectId");
      deleteCookie("projectName");
      deleteCookie("projectContent");
-     setCookie("projectId", id);
+     setCookie("projectId", projectId);
      setCookie("projectName", name);
      setCookie("projectContent", content);
      window.location.href = 'editProject.html'
  }
- 
+
  // 查看项目详细信息
  function getProjectInfo(id) {
      deleteCookie("projectId");
      setCookie("projectId", id);
      window.location.href = 'projectInfo.html'
  }
- 
+
 // 为了创建问卷而获取项目id、项目名称
 function createGetProjectInfo(id, name) {
     // 将当前的项目id、项目名称存入cookie，便于创建问卷时获取
