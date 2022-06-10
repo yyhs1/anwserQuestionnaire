@@ -51,7 +51,7 @@ public interface ProjectEntityMapper {
      * @param projectEntity
      * @return
      */
-    List<Map<String, Object>> queryProjectList(ProjectEntity projectEntity);
+    List<Map<String, Object>> queryAllProject(ProjectEntity projectEntity);
 
     /**
      * 查询全部项目的名字接口

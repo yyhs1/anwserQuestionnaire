@@ -85,8 +85,8 @@ public class ProjectService {
      * @param projectEntity
      * @return
      */
-    public List<Map<String, Object>> queryProjectList(ProjectEntity projectEntity) {
-        List<Map<String, Object>> projectEntityList = projectEntityMapper.queryProjectList(projectEntity);
+    public List<Map<String, Object>> queryAllProject(ProjectEntity projectEntity) {
+        List<Map<String, Object>> projectEntityList = projectEntityMapper.queryAllProject(projectEntity);
         return projectEntityList;
     }
 

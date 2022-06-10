@@ -22,7 +22,7 @@
  function getProjectQuest() {
      var keyWord = $("#keyWord").val();
      var userName = getCookie("userName");
-     var url = '/queryProjectList';
+     var url = '/queryAllProject';
      var data = {
          "projectName": keyWord,
          "createdBy": userName

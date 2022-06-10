@@ -33,11 +33,11 @@ public class ProjectController {
      * @param projectEntity
      * @return
      */
-    @RequestMapping(value = "/queryProjectList", method = RequestMethod.POST, headers = "Accept=application/json")
+    @RequestMapping(value = "/queryAllProject", method = RequestMethod.POST, headers = "Accept=application/json")
     public HttpResponseEntity queryProjectList(@RequestBody(required = false) ProjectEntity projectEntity) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-            List<Map<String, Object>> projectList = projectService.queryProjectList(projectEntity);
+            List<Map<String, Object>> projectList = projectService.queryAllProject(projectEntity);
             httpResponseEntity.setData(projectList);
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);

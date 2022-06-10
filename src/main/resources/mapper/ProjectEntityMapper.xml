@@ -50,7 +50,7 @@
     </delete>
 
     <!--查询项目列表-->
-    <select id="queryProjectList" parameterType="com.aim.questionnaire.dao.entity.ProjectEntity" resultType="map">
+    <select id="queryAllProject" parameterType="com.aim.questionnaire.dao.entity.ProjectEntity" resultType="map">
         SELECT id               AS id,
                user_id          AS userId,
                project_name     AS projectName,
