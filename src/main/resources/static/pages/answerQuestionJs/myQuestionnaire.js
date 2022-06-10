@@ -142,7 +142,9 @@
  
 // 为了创建问卷而获取项目id、项目名称
 function createGetProjectInfo(id, name) {
-    //alert("创建问卷")
+    // 将当前的项目id、项目名称存入cookie，便于创建问卷时获取
+    setCookie('TProjectId', id);
+    setCookie('projectName', name);
     window.location.href = "createQuestionnaire.html"
 }
 
