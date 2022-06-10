@@ -5,8 +5,6 @@ import com.aim.questionnaire.common.Constans;
 import com.aim.questionnaire.dao.UserEntityMapper;
 import com.aim.questionnaire.dao.entity.UserEntity;
 import com.aim.questionnaire.service.UserService;
-import com.alibaba.nacos.api.annotation.NacosInjected;
-import com.alibaba.nacos.api.naming.NamingService;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
