@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +27,57 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
+    /**
+     * 查询项目是否有正在开启的问卷
+     * @param projectEntity
+     * @return
+     */
+    @RequestMapping(value = "/isProjectHasOpenQuestionnaire", method = RequestMethod.POST, headers = "Accept=application/json")
+    public HttpResponseEntity isProjectHasOpenQuestionnaire(@RequestBody ProjectEntity projectEntity) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        Map<String, Object> map = new HashMap<>();
+        try {
+            boolean ret = projectService.isProjectHasOpenQuestionnaire(projectEntity.getId());
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            map.put("ret", ret);
+            httpResponseEntity.setData(map);
+        } catch (Exception e) {
+            logger.error("query project error", e);
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
+    /**
+     * 查询同名项目数量
+     * @param projectEntity
+     * @return
+     */
+    @RequestMapping(value = "/queryProjectCountByName", method = RequestMethod.POST, headers = "Accept=application/json")
+    public HttpResponseEntity queryProjectCountByName(@RequestBody ProjectEntity projectEntity) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        Map<String, Object> map = new HashMap<>();
+        try {
+            int ret = projectService.queryProjectCountByName(projectEntity.getProjectName());
+            if (ret > 0) {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+                map.put("ret", ret);
+                httpResponseEntity.setData(map);
+            } else {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.ADD_MESSAGE);
+            }
+        } catch (Exception e) {
+            logger.error("query project error", e);
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
 
     /**
      * 查询全部项目的信息
@@ -33,16 +85,16 @@ public class ProjectController {
      * @param projectEntity
      * @return
      */
-    @RequestMapping(value = "/queryProjectList", method = RequestMethod.POST, headers = "Accept=application/json")
-    public HttpResponseEntity queryProjectList(@RequestBody(required = false) ProjectEntity projectEntity) {
+    @RequestMapping(value = "/queryAllProject", method = RequestMethod.POST, headers = "Accept=application/json")
+    public HttpResponseEntity queryAllProject(@RequestBody(required = false) ProjectEntity projectEntity) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-            List<Map<String, Object>> projectList = projectService.queryProjectList(projectEntity);
+            List<Map<String, Object>> projectList = projectService.queryAllProject(projectEntity);
             httpResponseEntity.setData(projectList);
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
         } catch (Exception e) {
-            logger.error("queryProjectList error", e);
+            logger.error("queryAllProject error", e);
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }

@@ -50,6 +50,32 @@
         -->
         question_content,question_title,question,context
     </sql>
+
+    <!--根据项目id查询所有关联问卷-->
+    <select id="selectQuestionnaireByProjectId" parameterType="java.lang.String"
+            resultType="java.util.Map">
+        SELECT
+            id AS id,
+            project_id AS projectId,
+            question_name AS questionName,
+            question_content AS questionContent,
+            data_id AS dataId,
+            question_title AS questionTitle,
+            question_end_content AS questionEndContent,
+            context AS context,
+            question_stop AS questionStop,
+            release_time AS releaseTime,
+            start_time AS startTime,
+            end_time AS endTime,
+            answer_total AS answerTotal,
+            created_by AS createdBy,
+            creation_date AS creationDate,
+            last_updated_by AS lastUpdatedBy,
+            last_update_date AS lastUpdateDate
+        FROM questionnaire_info
+        WHERE project_id = #{projectId,jdbcType=VARCHAR}
+    </select>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
         <!--
           WARNING - @mbg.generated

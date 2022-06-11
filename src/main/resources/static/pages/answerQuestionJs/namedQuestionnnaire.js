@@ -71,7 +71,7 @@ function quickCreate() {
     var chooseTimeRange = $("#config-demo").val();
     var nowTimeInput = chooseTimeRange.split(' ~ ')[0];
     var questionendTime = chooseTimeRange.split(' ~ ')[1];
-    debugger
+
     var urlObj = GetRequest();
 
     deleteCookie('questionInfo');
@@ -90,7 +90,7 @@ function quickCreate() {
     }
     //console.log(getCookie('projectIdForCreate'));
     //console.log(getCookie('QuestionId'));
-    debugger;
+
     //直接创建问卷
     if (urlObj.i == "") {
         var da = {
@@ -107,6 +107,7 @@ function quickCreate() {
             da.questionStop = '5';
         }
         var url = '/addQuestionnaire';
+        console.log(da);
         commonAjaxPost(true, url, da, addQuestionnaireSuccess);
     } else {
         //导入问卷

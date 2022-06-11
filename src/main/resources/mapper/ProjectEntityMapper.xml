@@ -42,6 +42,12 @@
 
     </update>
 
+    <select id="queryProjectCountByName" parameterType="java.lang.String" resultType="int">
+        SELECT COUNT(*) AS count
+        FROM project_info
+        WHERE project_name = #{projectName,jdbcType=VARCHAR}
+    </select>
+
     <!--根据项目id删除项目-->
     <delete id="deleteProjectById" parameterType="map">
         DELETE
@@ -50,7 +56,7 @@
     </delete>
 
     <!--查询项目列表-->
-    <select id="queryProjectList" parameterType="com.aim.questionnaire.dao.entity.ProjectEntity" resultType="map">
+    <select id="queryAllProject" parameterType="com.aim.questionnaire.dao.entity.ProjectEntity" resultType="map">
         SELECT id               AS id,
                user_id          AS userId,
                project_name     AS projectName,
@@ -60,7 +66,7 @@
                last_updated_by  AS lastUpdatedBy,
                last_update_date AS lastUpdateDate
         FROM project_info
-        WHERE project_name like '%${projectName}%'
+        WHERE project_name LIKE CONCAT('%', #{projectName, jdbcType=VARCHAR}, '%')
     </select>
 
     <!--查询全部项目的名字接口-->
