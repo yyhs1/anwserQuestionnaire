@@ -31,9 +31,9 @@ function addFunctionAlty(value, row, index) {
 
     btnText += "<button type=\"button\" id=\"btn_look\" onclick=\"editQuestionnaire(" + "'" + row.id + "')\" class=\"btn btn-default-g ajax-link\">编辑</button>&nbsp;&nbsp;";
 
-    if (row.questiopnStop === "0") {
+    if (row.questionStop === "0") {
         btnText += "<button type=\"button\" id=\"btn_stop" + row.id + "\" onclick=\"changeQuestionnaireStatus(" + "'" + row.id + "'" + ")\" class=\"btn btn-danger-g ajax-link\">关闭</button>&nbsp;&nbsp;";
-    } else {
+    } else if (row.questionStop === "5"){
         btnText += "<button type=\"button\" id=\"btn_stop" + row.id + "\" onclick=\"changeQuestionnaireStatus(" + "'" + row.id + "'" + ")\" class=\"btn btn-success-g ajax-link\">开启</button>&nbsp;&nbsp;"
     }
     btnText += "<button type=\"button\" id=\"btn_look\" onclick=\"questionnaireDetile(" + "'" + row.id + "')\" class=\"btn btn-default-g ajax-link\">详情</button>&nbsp;&nbsp;";
@@ -124,6 +124,7 @@ function relatedQuestionnaireTableInit() {
                             dataNewObj.id = userInfo[i].id;
                             dataNewObj.questionName = userInfo[i].questionName;
                             dataNewObj.releaseTime = userInfo[i].releaseTime;
+                            dataNewObj.questionStop = userInfo[i].questionStop;
                             dataNewObj.status = getStatus(
                                 userInfo[i].questionStop, userInfo[i].startTime,
                                 userInfo[i].endTime, userInfo[i].releaseTime
@@ -202,7 +203,7 @@ function editQuestionnaire(questionnaireId) {
     commonAjaxPost(false, "/queryQuestionnaireById", {id: questionnaireId}, function (result) {
         if (result.code === "666") {
             var data = result.data;
-            console.log(data);
+            // console.log(data);
             setCookie('questionName', data.questionName);
             setCookie('questionContent', data.questionContent);
             setCookie('questionId', data.id);
@@ -220,36 +221,33 @@ function editQuestionnaire(questionnaireId) {
 
 // .btn-success-g
 //
-// function changeQuestionnaireStatus (value, row, index) {
-//     var status = row.questionStop;
-//     var id = row.id;
-//     if (status === "1") {
-//         status = "0";
-//     } else {
-//         status = "1";
-//     }
-//     commonAjaxPost(true, url, , function (data) {
-//         if (data.code === "666") {
-//             $("#questionnaireTable").bootstrapTable('refresh');
-//         } else {
-//             alert(data.msg);
-//         }
-//     });
-//
-//     $.ajax({
-//         url: "/questionnaire/updateQuestionnaireStatus",
-//         type: "POST",
-//         data: {
-//             id: id,
-//             status: status
-//         },
-//         success: function (data) {
-//             if (data.code == "666") {
-//                 $("#questionnaireTable").bootstrapTable('refresh');
-//             }
-//         }
-//     });
-// }
+function changeQuestionnaireStatus (questionnaireId) {
+
+    var questionStop;
+
+    commonAjaxPost(false, "/queryQuestionnaireById", {id: questionnaireId}, function (result) {
+        if (result.code === "666") {
+            var data = result.data;
+            questionStop = data.questionStop;
+        } else {
+            layer.msg(result.msg);
+        }
+    });
+
+    if (questionStop === "5") {
+        questionStop = "0";
+    } else {
+        questionStop = "5";
+    }
+    commonAjaxPost(true, '/modifyQuestionnaireInfo', {'id':questionnaireId, 'questionStop':questionStop}, function (data) {
+        if (data.code === "666") {
+            $("#questionnaireTable").bootstrapTable('refresh');
+        } else {
+            alert(data.msg);
+        }
+    });
+
+}
 //
 // questionnaireDetile
 //
