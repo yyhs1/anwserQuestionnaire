@@ -18,6 +18,15 @@ public class QuestionnaireService {
     private QuestionnaireEntityMapper questionnaireEntityMapper;
 
     /**
+     * 删除问卷信息
+     * @param questionnaireEntity
+     * @return
+     */
+    public int deleteQuestionnaireInfo(QuestionnaireEntity questionnaireEntity) {
+        return questionnaireEntityMapper.deleteByPrimaryKey(questionnaireEntity.getId());
+    }
+
+    /**
      * 修改问卷信息
      * @param questionnaireEntity
      * @return

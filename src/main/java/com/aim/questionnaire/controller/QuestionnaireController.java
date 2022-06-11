@@ -27,6 +27,26 @@ public class QuestionnaireController {
     private QuestionnaireService questionnaireService;
 
     /**
+     * 删除问卷信息
+     * @param questionnaireEntity
+     * @return
+     */
+    @RequestMapping(value = "/deleteQuestionnaireInfo", method = RequestMethod.POST, headers = "Accept=application/json")
+    public HttpResponseEntity deleteQuestionnaireInfo(@RequestBody QuestionnaireEntity questionnaireEntity) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            questionnaireService.deleteQuestionnaireInfo(questionnaireEntity);
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.DELETE_MESSAGE);
+        } catch (Exception e) {
+            logger.error("delete questionnaire error", e);
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
+    /**
      * 修改问卷信息
      * @param questionnaireEntity
      * @return
@@ -37,7 +57,7 @@ public class QuestionnaireController {
         try {
             questionnaireService.modifyQuestionnaireInfo(questionnaireEntity);
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            httpResponseEntity.setMessage(Constans.UPDATE_MESSAGE);
         } catch (Exception e) {
             logger.error("modify questionnaire error", e);
             httpResponseEntity.setCode(Constans.EXIST_CODE);

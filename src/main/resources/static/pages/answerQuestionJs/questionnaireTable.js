@@ -36,7 +36,7 @@ function addFunctionAlty(value, row, index) {
     } else if (row.questionStop === "5"){
         btnText += "<button type=\"button\" id=\"btn_stop" + row.id + "\" onclick=\"changeQuestionnaireStatus(" + "'" + row.id + "'" + ")\" class=\"btn btn-success-g ajax-link\">开启</button>&nbsp;&nbsp;"
     }
-    btnText += "<button type=\"button\" id=\"btn_look\" onclick=\"questionnaireDetile(" + "'" + row.id + "')\" class=\"btn btn-default-g ajax-link\">详情</button>&nbsp;&nbsp;";
+    btnText += "<button type=\"button\" id=\"btn_look\" onclick=\"questionnaireDetail(" + "'" + row.id + "')\" class=\"btn btn-default-g ajax-link\">详情</button>&nbsp;&nbsp;";
 
     btnText += "<button type=\"button\" id=\"btn_stop" + row.id + "\" onclick=\"deleteQuestionnaire(" + "'" + row.id + "'" + ")\" class=\"btn btn-danger-g ajax-link\">删除</button>&nbsp;&nbsp;";
 
@@ -172,6 +172,7 @@ function formatDateToTimeStamp(str) {
     return new Date(date + " " + time).getTime();
 }
 
+// 获取用于显示在表格中的问卷状态信息
 function getStatus(status, startTime, endTime, releaseTime) {
     if(status === "5"){
         return "<p style='color: #e65c47'><strong>● 关闭中</strong></p>";
@@ -196,7 +197,48 @@ function getStatus(status, startTime, endTime, releaseTime) {
 
 }
 
+
+// 用于判断问卷是否可以被删除与修改
+function isQuestionnaireOpenOrReleased(questionId) {
+
+    let flag = false;
+
+    commonAjaxPost(false, "/queryQuestionnaireById", {'id': questionId}, function (result) {
+        if(result.code === "666") {
+            var question = result.data;
+            console.log(question)
+            if (question.questionStop === "0") {
+                alert("问卷已启动，请停止后再试！");
+                flag = true;
+            }
+            if (question.releaseTime != null) {
+                alert("问卷已发布，无法更改！");
+                flag = true;
+            }
+            // if (question.startTime > new Date().getTime()) {
+            //     alert("问卷未开始，无法更改！");
+            //     return;
+            // }
+            // if (question.endTime < new Date().getTime()) {
+            //     alert("问卷已过期，无法更改！");
+            //     return;
+            // }
+        } else {
+            alert(result.msg);
+            flag = true;
+        }
+
+    });
+
+    return flag;
+}
+
+// 编辑问卷信息
 function editQuestionnaire(questionnaireId) {
+
+    if(isQuestionnaireOpenOrReleased(questionnaireId)) {
+        return;
+    }
 
     // console.log(questionnaireId);
 
@@ -219,8 +261,37 @@ function editQuestionnaire(questionnaireId) {
 
 }
 
-// .btn-success-g
-//
+
+// 删除问卷
+function deleteQuestionnaire(questionnaireId) {
+    if(isQuestionnaireOpenOrReleased(questionnaireId)) {
+        return;
+    }
+
+    layer.confirm('您确认要删除此问卷吗？', {
+        btn: ['确定', '取消'] //按钮
+    }, function () {
+        var url = '/deleteQuestionnaireInfo';
+        commonAjaxPost(true, url, {'id': questionnaireId}, function (result) {
+            if (result.code === "666") {
+                layer.msg(result.message, {icon: 1});
+                $("#questionnaireTable").bootstrapTable('refresh');
+            } else if (result.code === "333") {
+                layer.msg(result.message, {icon: 2});
+                setTimeout(function () {
+                    window.location.href = 'login.html';
+                }, 1000);
+            } else {
+                layer.msg(result.message, {icon: 2});
+            }
+        });
+    }, function () {
+    });
+
+}
+
+
+// 改变问卷的开启、关闭状态
 function changeQuestionnaireStatus (questionnaireId) {
 
     var questionStop;
@@ -248,7 +319,9 @@ function changeQuestionnaireStatus (questionnaireId) {
     });
 
 }
-//
-// questionnaireDetile
-//
-// deleteQuestionnaire
+
+// 进入到发送、编辑、预览问卷界面
+function questionnaireDetail (questionnaireId) {
+    setCookie('questionnaireId', questionnaireId);
+    window.parent.open('sendQuestionnaire.html');
+}
