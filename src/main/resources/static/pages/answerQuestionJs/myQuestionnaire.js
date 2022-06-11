@@ -72,7 +72,8 @@
                  text += "             <!--Anim pariatur cliche...-->";
                  text += "";
                  text += "";
-                 text += "<span style=\"color:#d9534f;font-size:16px\">暂无调查问卷或问卷已过期</span>";
+                 // text += "<span style=\"color:#d9534f;font-size:16px\">暂无调查问卷或问卷已过期</span>";
+                 text += "<iframe src=\"questionnaireTable.html?projectId="+  projectInfo.id +"  \" frameborder=\"0\" width=\"1050\" height=\"200\"></iframe>";
                  text += "         </div>";
                  text += "     </div>";
                  text += " </div>";
