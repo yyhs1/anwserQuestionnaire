@@ -111,9 +111,8 @@ function quickCreate() {
         commonAjaxPost(true, url, da, addQuestionnaireSuccess);
     } else {
         //导入问卷
-        var url = '/queryQuestionnaireAll';
+        var url = '/queryQuestionnaireById';
         var da = {'id': getCookie('QuestionId')};
-        commonAjaxPost(true, url, da, queryQuestionnaireAllSuccess);
         da1 = {
             'questionName': questionName,
             'questionContent': questionContent,
@@ -123,6 +122,7 @@ function quickCreate() {
             'dataId': getCookie('dataId'),
             'projectId': getCookie('TProjectId')
         };
+        commonAjaxPost(true, url, da, queryQuestionnaireByIdSuccess);
         // deleteCookie('QuestionId');
     }
 }
@@ -143,10 +143,10 @@ function addQuestionnaireSuccess(res) {
     }
 }
 
-function queryQuestionnaireAllSuccess(res) {
+function queryQuestionnaireByIdSuccess(res) {
     //console.log(res);
     if (res.code == '666') {
-        da1.questionList = res.data.question;
+        da1.question = res.data.question;
         da1.questionTitle = res.data.questionTitle;
         //console.log(da1);
         var url = '/addQuestionnaire';

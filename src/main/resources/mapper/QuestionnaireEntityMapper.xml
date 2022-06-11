@@ -76,6 +76,29 @@
         WHERE project_id = #{projectId,jdbcType=VARCHAR}
     </select>
 
+    <!--查询所有问卷-->
+    <select id="selectAllQuestionnaire" resultType="java.util.Map">
+        SELECT
+            id AS id,
+            project_id AS projectId,
+            question_name AS questionName,
+            question_content AS questionContent,
+            data_id AS dataId,
+            question_title AS questionTitle,
+            question_end_content AS questionEndContent,
+            context AS context,
+            question_stop AS questionStop,
+            release_time AS releaseTime,
+            start_time AS startTime,
+            end_time AS endTime,
+            answer_total AS answerTotal,
+            created_by AS createdBy,
+            creation_date AS creationDate,
+            last_updated_by AS lastUpdatedBy,
+            last_update_date AS lastUpdateDate
+        FROM questionnaire_info
+    </select>
+
     <select id="selectQuestionnaireById" parameterType="java.lang.String" resultType="map">
         SELECT
             id AS id,
@@ -867,11 +890,11 @@
     </select>
 
     <!--查询所有状态为1的问卷-->
-    <select id="queryAllQuestionnaire" resultType="java.util.Map">
-        select id as questionId, question_name as questionName
-        from questionnaire_info
-        where question_stop = "1"
-    </select>
+<!--    <select id="queryAllQuestionnaire" resultType="java.util.Map">-->
+<!--        select id as questionId, question_name as questionName-->
+<!--        from questionnaire_info-->
+<!--        where question_stop = "1"-->
+<!--    </select>-->
 
     <!--批量插入问卷答题详情-->
     <insert id="addQuestionRecordAnswerCount" parameterType="string">

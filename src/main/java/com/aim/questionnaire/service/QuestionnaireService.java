@@ -18,6 +18,14 @@ public class QuestionnaireService {
     private QuestionnaireEntityMapper questionnaireEntityMapper;
 
     /**
+     * 查询全部问卷
+     * @return
+     */
+    public List<Map<String, Object>> queryAllQuestionnaireInfo() {
+        return questionnaireEntityMapper.selectAllQuestionnaire();
+    }
+
+    /**
      * 删除问卷信息
      * @param questionnaireEntity
      * @return

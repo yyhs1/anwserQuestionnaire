@@ -27,6 +27,27 @@ public class QuestionnaireController {
     private QuestionnaireService questionnaireService;
 
     /**
+     * 查询全部问卷
+     * @param questionnaireEntity
+     * @return
+     */
+    @RequestMapping(value = "/queryAllQuestionnaireInfo", method = RequestMethod.POST, headers = "Accept=application/json")
+    public HttpResponseEntity queryAllQuestionnaireInfo(@RequestBody QuestionnaireEntity questionnaireEntity) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            List<Map<String, Object>> list = questionnaireService.queryAllQuestionnaireInfo();
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            httpResponseEntity.setData(list);
+        } catch (Exception e) {
+            logger.error("delete questionnaire error", e);
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
+    /**
      * 删除问卷信息
      * @param questionnaireEntity
      * @return

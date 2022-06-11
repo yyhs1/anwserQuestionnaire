@@ -11,6 +11,8 @@ import java.util.Map;
 @Repository
 public interface QuestionnaireEntityMapper {
 
+    List<Map<String, Object>> selectAllQuestionnaire();
+
     List<Map<String, Object>> selectQuestionnaireByProjectId(String projectId);
 
     Map<String, Object> selectQuestionnaireById(String questionnaireId);
@@ -302,12 +304,12 @@ public interface QuestionnaireEntityMapper {
 
     String queryQuestionnaireIsStopStatus(@Param("questionId") String questionId);
 
-    /**
-     * 查询所有状态为1的问卷
-     *
-     * @return
-     */
-    List<Map<String, Object>> queryAllQuestionnaire();
+//    /**
+//     * 查询所有状态为1的问卷
+//     *
+//     * @return
+//     */
+//    List<Map<String, Object>> queryAllQuestionnaire();
 
     /**
      * 批量插入问卷答题详情
