@@ -91,8 +91,13 @@ function relatedQuestionnaireTableInit() {
                     width: '230px'
                 },
                 {
-                    field: 'startTime',
+                    field: 'releaseTime',
                     title: '发布时间',
+                    align: 'center'
+                },
+                {
+                    field: 'status',
+                    title: '问卷状态',
                     align: 'center'
                 },
                 {
@@ -118,7 +123,11 @@ function relatedQuestionnaireTableInit() {
                             };
                             dataNewObj.id = userInfo[i].id;
                             dataNewObj.questionName = userInfo[i].questionName;
-                            dataNewObj.startTime = userInfo[i].startTime;
+                            dataNewObj.releaseTime = userInfo[i].releaseTime;
+                            dataNewObj.status = getStatus(
+                                userInfo[i].questionStop, userInfo[i].startTime,
+                                userInfo[i].endTime, userInfo[i].releaseTime
+                            );
                             NewData.push(dataNewObj);
                         }
                         //console.log(NewData)
@@ -152,6 +161,38 @@ function relatedQuestionnaireTableInit() {
     }
 
     return oTableInit;
+}
+
+function formatDateToTimeStamp(str) {
+    var date = str.split("T")[0];
+    var time = str.split("T")[1].split(".")[0];
+
+    //get timestamp
+    return new Date(date + " " + time).getTime();
+}
+
+function getStatus(status, startTime, endTime, releaseTime) {
+    if(status === "5"){
+        return "<p style='color: #e65c47'><strong>● 关闭中</strong></p>";
+    }
+
+
+    var currentTimeStamp = new Date().getTime();
+    var startTimeStamp = formatDateToTimeStamp(startTime);
+    var endTimeStamp = formatDateToTimeStamp(endTime);
+
+    if(currentTimeStamp <= startTimeStamp){
+        return "<p style='color: #e1e1e1'><strong>● 进行中（未开始）</strong></p>";
+    } else if(currentTimeStamp >= endTimeStamp){
+        return "<p style='color: #e1e1e1'><strong>● 进行中（已过期）</strong></p>";
+    }
+
+    if(releaseTime != null){
+        return "<p style='color: #00AA00'><strong>● 进行中（已发布）</strong></p>";
+    } else {
+        return "<p style='color: #00AA00'><strong>● 进行中（未发布）</strong></p>";
+    }
+
 }
 
 function editQuestionnaire(questionnaireId) {
