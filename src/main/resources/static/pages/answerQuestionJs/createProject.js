@@ -15,7 +15,7 @@ $(function () {
 function createProject() {
     projectName = $("#projectName").val();
     projectContent = $("#inputIntro").val();
-    hasSameName = false;
+    hasSameName = true;
 
     commonAjaxPost(false, '/queryProjectCountByName', {'projectName': projectName}, function (result) {
         console.log(result);
@@ -31,7 +31,6 @@ function createProject() {
             layer.msg(result.message, {icon: 2})
         }
     });
-
     createProjectRight();
 }
 

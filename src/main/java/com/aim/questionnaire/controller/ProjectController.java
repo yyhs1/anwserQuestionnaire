@@ -61,11 +61,11 @@ public class ProjectController {
         Map<String, Object> map = new HashMap<>();
         try {
             int ret = projectService.queryProjectCountByName(projectEntity.getProjectName());
+            map.put("ret", ret);
+            httpResponseEntity.setData(map);
             if (ret > 0) {
                 httpResponseEntity.setCode(Constans.EXIST_CODE);
                 httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
-                map.put("ret", ret);
-                httpResponseEntity.setData(map);
             } else {
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.ADD_MESSAGE);
