@@ -13,6 +13,8 @@ public interface QuestionnaireEntityMapper {
 
     List<Map<String, Object>> selectQuestionnaireByProjectId(String projectId);
 
+    Map<String, Object> selectQuestionnaireById(String questionnaireId);
+
     int deleteByProjectId(String id);
 
     /**

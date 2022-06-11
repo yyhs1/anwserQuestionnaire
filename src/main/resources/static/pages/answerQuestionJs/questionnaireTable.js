@@ -26,18 +26,19 @@ window.operateEvents = {
 };
 
 function addFunctionAlty(value, row, index) {
+    // console.log(row);
     var btnText = '';
 
-    btnText += "<button type=\"button\" id=\"btn_look\" onclick=\"resetPassword(" + "'" + row.id + "'" + ")\" style='width: 77px;' class=\"btn btn-default-g ajax-link\">重置密码</button>&nbsp;&nbsp;";
+    btnText += "<button type=\"button\" id=\"btn_look\" onclick=\"editQuestionnaire(" + "'" + row.id + "')\" class=\"btn btn-default-g ajax-link\">编辑</button>&nbsp;&nbsp;";
 
-    btnText += "<button type=\"button\" id=\"btn_look\" onclick=\"editUserPage(" + "'" + row.id + "')\" class=\"btn btn-default-g ajax-link\">编辑</button>&nbsp;&nbsp;";
-
-    if (row.status === "1") {
-        btnText += "<button type=\"button\" id=\"btn_stop" + row.id + "\" onclick=\"changeStatus(" + "'" + row.id + "'" + ")\" class=\"btn btn-danger-g ajax-link\">关闭</button>&nbsp;&nbsp;";
-    } else if (row.status === "0") {
-        btnText += "<button type=\"button\" id=\"btn_stop" + row.id + "\" onclick=\"changeStatus(" + "'" + row.id + "'" + ")\" class=\"btn btn-success-g ajax-link\">开启</button>&nbsp;&nbsp;"
+    if (row.questiopnStop === "0") {
+        btnText += "<button type=\"button\" id=\"btn_stop" + row.id + "\" onclick=\"changeQuestionnaireStatus(" + "'" + row.id + "'" + ")\" class=\"btn btn-danger-g ajax-link\">关闭</button>&nbsp;&nbsp;";
+    } else {
+        btnText += "<button type=\"button\" id=\"btn_stop" + row.id + "\" onclick=\"changeQuestionnaireStatus(" + "'" + row.id + "'" + ")\" class=\"btn btn-success-g ajax-link\">开启</button>&nbsp;&nbsp;"
     }
-    btnText += "<button type=\"button\" id=\"btn_stop" + row.id + "\" onclick=\"deleteUser(" + "'" + row.id + "'" + ")\" class=\"btn btn-danger-g ajax-link\">删除</button>&nbsp;&nbsp;";
+    btnText += "<button type=\"button\" id=\"btn_look\" onclick=\"questionnaireDetile(" + "'" + row.id + "')\" class=\"btn btn-default-g ajax-link\">详情</button>&nbsp;&nbsp;";
+
+    btnText += "<button type=\"button\" id=\"btn_stop" + row.id + "\" onclick=\"deleteQuestionnaire(" + "'" + row.id + "'" + ")\" class=\"btn btn-danger-g ajax-link\">删除</button>&nbsp;&nbsp;";
 
     return btnText;
 }
@@ -102,7 +103,7 @@ function relatedQuestionnaireTableInit() {
                     formatter: addFunctionAlty//表格中增加按钮
                 }],
             responseHandler: function (res) {
-                console.log(res);
+                // console.log(res);
                 if (res.code == "666") {
                     var userInfo = res.data;
                     // console.log(userInfo);
@@ -152,3 +153,63 @@ function relatedQuestionnaireTableInit() {
 
     return oTableInit;
 }
+
+function editQuestionnaire(questionnaireId) {
+
+    // console.log(questionnaireId);
+
+    commonAjaxPost(false, "/queryQuestionnaireById", {id: questionnaireId}, function (result) {
+        if (result.code === "666") {
+            var data = result.data;
+            console.log(data);
+            setCookie('questionName', data.questionName);
+            setCookie('questionContent', data.questionContent);
+            setCookie('questionId', data.id);
+            setCookie('endTime', data.endTime);
+            setCookie('creationDate', data.creationDate);
+            setCookie('dataId', data.dataId);
+            setCookie('ifEditQuestType', "true");
+            window.parent.open('editQuestionnaire.html?questionnaireId=' + questionnaireId);
+        } else {
+            layer.msg(result.msg);
+        }
+    });
+
+}
+
+// .btn-success-g
+//
+// function changeQuestionnaireStatus (value, row, index) {
+//     var status = row.questionStop;
+//     var id = row.id;
+//     if (status === "1") {
+//         status = "0";
+//     } else {
+//         status = "1";
+//     }
+//     commonAjaxPost(true, url, , function (data) {
+//         if (data.code === "666") {
+//             $("#questionnaireTable").bootstrapTable('refresh');
+//         } else {
+//             alert(data.msg);
+//         }
+//     });
+//
+//     $.ajax({
+//         url: "/questionnaire/updateQuestionnaireStatus",
+//         type: "POST",
+//         data: {
+//             id: id,
+//             status: status
+//         },
+//         success: function (data) {
+//             if (data.code == "666") {
+//                 $("#questionnaireTable").bootstrapTable('refresh');
+//             }
+//         }
+//     });
+// }
+//
+// questionnaireDetile
+//
+// deleteQuestionnaire

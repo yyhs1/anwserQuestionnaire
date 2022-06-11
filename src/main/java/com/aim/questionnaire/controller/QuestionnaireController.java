@@ -5,6 +5,7 @@ import com.aim.questionnaire.common.Constans;
 import com.aim.questionnaire.dao.entity.ProjectEntity;
 import com.aim.questionnaire.dao.entity.QuestionnaireEntity;
 import com.aim.questionnaire.service.QuestionnaireService;
+import com.sun.corba.se.spi.ior.ObjectKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,52 @@ public class QuestionnaireController {
     @Autowired
     private QuestionnaireService questionnaireService;
 
+    /**
+     * 修改问卷信息
+     * @param questionnaireEntity
+     * @return
+     */
+    @RequestMapping(value = "/modifyQuestionnaireInfo", method = RequestMethod.POST, headers = "Accept=application/json")
+    public HttpResponseEntity modifyQuestionnaireInfo(@RequestBody QuestionnaireEntity questionnaireEntity) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            questionnaireService.modifyQuestionnaireInfo(questionnaireEntity);
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+        } catch (Exception e) {
+            logger.error("modify questionnaire error", e);
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
+    /**
+     * 根据id查找问卷
+     * @param questionnaireEntity
+     * @return
+     */
+    @RequestMapping(value = "/queryQuestionnaireById", method = RequestMethod.POST, headers = "Accept=application/json")
+    public HttpResponseEntity queryQuestionnaireById(@RequestBody QuestionnaireEntity questionnaireEntity) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            Map<String, Object> map = questionnaireService.queryQuestionnaireById(questionnaireEntity.getId());
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            httpResponseEntity.setData(map);
+        } catch (Exception e) {
+            logger.error("query questionnaire error", e);
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
+    /**
+     * 添加问卷信息
+     * @param questionnaireEntity
+     * @return
+     */
     @RequestMapping(value = "/addQuestionnaire", method = RequestMethod.POST, headers = "Accept=application/json")
     public HttpResponseEntity addQuestionnaire(@RequestBody QuestionnaireEntity questionnaireEntity) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
@@ -45,7 +92,11 @@ public class QuestionnaireController {
         return httpResponseEntity;
     }
 
-
+    /**
+     * 根据项目id查询所有关联的问卷
+     * @param questionnaireEntity
+     * @return
+     */
     @RequestMapping(value = "/queryQuestionnaireByProjectId", method = RequestMethod.POST, headers = "Accept=application/json")
     public HttpResponseEntity queryQuestionnaireByProjectId(@RequestBody QuestionnaireEntity questionnaireEntity) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();

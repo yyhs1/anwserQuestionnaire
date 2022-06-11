@@ -59,7 +59,7 @@ public class UserRoleService {
         String id = UUIDUtil.getOneUUID();
         map.put("id", "500" + id);
         //创建时间
-        Date date = DateUtil.getCreateTime();
+        Date date = DateUtil.getCurrentTime();
         map.put("creationDate", date);
         map.put("lastUpdateDate", date);
         //查找所有的角色的等级
@@ -95,7 +95,7 @@ public class UserRoleService {
      */
     public int modifyRoleStatus(Map<String, Object> map) {
         //创建时间
-        Date date = DateUtil.getCreateTime();
+        Date date = DateUtil.getCurrentTime();
         map.put("lastUpdateDate", date);
         int result = userRootEntityMapper.modifyRoleStatus(map);
         int resultUser = userEntityMapper.modifyUserInfoStatus(map);

@@ -63,7 +63,7 @@ public class ProjectService {
         projectEntity.setUserId(userId);
 
         //创建时间
-        Date date = DateUtil.getCreateTime();
+        Date date = DateUtil.getCurrentTime();
         projectEntity.setCreationDate(date);
         projectEntity.setLastUpdateDate(date);
 
@@ -84,7 +84,7 @@ public class ProjectService {
         projectEntity.setUserId(map.get("userId").toString());
 
         //创建时间
-        Date date = DateUtil.getCreateTime();
+        Date date = DateUtil.getCurrentTime();
         projectEntity.setLastUpdateDate(date);
 
         return projectEntityMapper.updateProjectById(projectEntity);

@@ -20,7 +20,7 @@ $(function () {
     $("#questionName").val(questionName);
     $("#questionContent").val(questionContent);
 
-    queryAllDataType();
+    // queryAllDataType();
     $("#questionStartEndTime").val(startTime + " ~ " + endTime);
 
     $("#ifRemand").css('display','none');
@@ -70,9 +70,9 @@ function modifyQuest() {
     var questionStarTimeIntTemp = dateChange(questionStarTimeInt);
     var questionEnTimeIntTemp = dateChange(questionEnTimeInt);
 
-    if (questionNameInt.trim() == '') {
+    if (questionNameInt.trim() === '') {
         layer.msg('请完整填写项目名称')
-    } else if (questionContentInt.trim() == '') {
+    } else if (questionContentInt.trim() === '') {
         layer.msg('请完整填写项目描述')
     } else {
         var url = '/modifyQuestionnaireInfo';
@@ -90,12 +90,12 @@ function modifyQuest() {
 
 //修改问卷信息成功
 function modifyQuestSuccess(result) {
-    if (result.code == '666') {
+    if (result.code === '666') {
         layer.msg('修改成功', {icon: 1});
         setTimeout(function () {
             window.location.href = 'myQuestionnaires.html';
         }, 1000);
-    } else if (result.code == "333") {
+    } else if (result.code === "333") {
         layer.msg(result.message, {icon: 2});
         setTimeout(function () {
             window.location.href = 'login.html';

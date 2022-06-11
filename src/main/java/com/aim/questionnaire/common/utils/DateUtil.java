@@ -901,7 +901,7 @@ public class DateUtil {
      * 获取当前时间
      * @return
      */
-    public final static Date getCreateTime() {
+    public final static Date getCurrentTime() {
         String strDate = dateToString(new Date(), DEF_DATE_FORMAT_STR);
         Date date = stringToSqlTimestamp(strDate, DEF_DATE_FORMAT_STR);
         return date;

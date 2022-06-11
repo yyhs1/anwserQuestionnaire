@@ -76,6 +76,29 @@
         WHERE project_id = #{projectId,jdbcType=VARCHAR}
     </select>
 
+    <select id="selectQuestionnaireById" parameterType="java.lang.String" resultType="map">
+        SELECT
+            id AS id,
+            project_id AS projectId,
+            question_name AS questionName,
+            question_content AS questionContent,
+            data_id AS dataId,
+            question_title AS questionTitle,
+            question_end_content AS questionEndContent,
+            context AS context,
+            question_stop AS questionStop,
+            release_time AS releaseTime,
+            start_time AS startTime,
+            end_time AS endTime,
+            answer_total AS answerTotal,
+            created_by AS createdBy,
+            creation_date AS creationDate,
+            last_updated_by AS lastUpdatedBy,
+            last_update_date AS lastUpdateDate
+        FROM questionnaire_info
+        WHERE id = #{id,jdbcType=VARCHAR}
+    </select>
+
     <delete id="deleteByProjectId" parameterType="java.lang.String">
         DELETE
         FROM questionnaire_info
