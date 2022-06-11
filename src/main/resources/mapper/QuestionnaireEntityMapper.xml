@@ -76,6 +76,12 @@
         WHERE project_id = #{projectId,jdbcType=VARCHAR}
     </select>
 
+    <delete id="deleteByProjectId" parameterType="java.lang.String">
+        DELETE
+        FROM questionnaire_info
+        WHERE project_id = #{projectId,jdbcType=VARCHAR}
+    </delete>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
         <!--
           WARNING - @mbg.generated

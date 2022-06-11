@@ -97,6 +97,7 @@ public class ProjectService {
      * @return
      */
     public int deleteProjectById(ProjectEntity projectEntity) {
+        questionnaireEntityMapper.deleteByProjectId(projectEntity.getId());
         return projectEntityMapper.deleteProjectById(projectEntity);
     }
 
