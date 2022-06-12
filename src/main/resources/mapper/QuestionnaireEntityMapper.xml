@@ -117,7 +117,8 @@
             created_by AS createdBy,
             creation_date AS creationDate,
             last_updated_by AS lastUpdatedBy,
-            last_update_date AS lastUpdateDate
+            last_update_date AS lastUpdateDate,
+            question AS question
         FROM questionnaire_info
         WHERE id = #{id,jdbcType=VARCHAR}
     </select>
