@@ -12,10 +12,14 @@ $(function () {
     // commonAjaxPost(true, url, da, queryAllDataTypeSuccess);
     var belongType = document.getElementById('belongType');
     belongType.options.length = 0;
-    var collOpt = document.createElement('option');
-    collOpt.innerText = "测试";
-    collOpt.value = "1";
-    belongType.appendChild(collOpt);
+    var collOpt2 = document.createElement('option');
+    var collOpt4 = document.createElement('option');
+    collOpt2.innerText = "在校生";
+    collOpt2.value = "2";
+    collOpt4.innerText = "教师";
+    collOpt4.value = "4";
+    belongType.appendChild(collOpt2);
+    belongType.appendChild(collOpt4);
 });
 
 //铺调查类型
@@ -62,7 +66,9 @@ function createQuestion() {
     //deleteCookie('TQuestionContent');
     //deleteCookie('QuestionId');
     //dataId = $('#belongType').val();
-    //setCookie('dataId', dataId);
+    var options = $("#belongType option:selected");
+    $("#questBelong").val(options.text());
+    setCookie('dataId', options.val());
     window.location.href = 'namedQuestionnaire.html?i=';
 }
 

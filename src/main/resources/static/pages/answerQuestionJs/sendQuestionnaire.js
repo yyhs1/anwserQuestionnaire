@@ -24,55 +24,30 @@ window.operateEvents = {
     }
 };
 
-//不是用人单位的列名
-var columnsForCompany =[{
-    checkbox: true,
-    visible: false
-}, {
-    field: 'no',
-    title: '序号',
-    align: 'center',
-}, {
-    field: 'answerNum',
-    title: '答题人编号',
-    align: 'center',
-    width: '200px'
-},
-    {
-        field: 'answerName',
-        title: '姓名',
-        align: 'center'
-    }, {
-        field: 'answerBelong',
-        title: '学校',
-        align: 'center'
-    }, {
-        field: 'answerPhone',
-        title: '手机号码',
-        align: 'center'
-    },
-    {
-        field: 'answerEmail',
-        title: '邮箱',
-        align: 'center'
-    }, {
-        field: 'operation',
-        title: '操作',
-        align: 'center',
-        events: operateEvents,//给按钮注册事件
-        formatter: addFunctionAlty//表格中增加按钮
-    }]
+// const columnsForTest = [
+//     {
+//         checkbox: true,
+//         visible: false
+//     }, {
+//         field: 'no',
+//         title: '序号',
+//         align: 'center',
+//     }, {
+//         field: 'test',
+//         title: '测试',
+//         align: 'center'
+//     }, {
+//         field: 'operation',
+//         title: '操作',
+//         align: 'center',
+//         events: operateEvents,//给按钮注册事件
+//         formatter: addFunctionAlty//表格中增加按钮
+//     }
+// ];
 
-
-if (dataId == "2") {
-    $("#getDownLoadBtn").prepend("<a style=\"margin-right: 20px;\" href=\"../在校生上传数据模板.xlsx\" class=\"add__batches pull-left\">下载模板</a>");
-} else if (dataId == "3") {
-    $("#getDownLoadBtn").prepend("<a style=\"margin-right: 20px;\" href=\"../毕业生上传数据模板.xlsx\" class=\"add__batches pull-left\">下载模板</a>");
-} else if (dataId == "4") {
-    $("#getDownLoadBtn").prepend("<a style=\"margin-right: 20px;\" href=\"../教师上传数据模板.xlsx\" class=\"add__batches pull-left\">下载模板</a>");
-} else if (dataId == "5") {
-    $("#getDownLoadBtn").prepend("<a style=\"margin-right: 20px;\" href=\"../用人单位上传数据模板.xlsx\" class=\"add__batches pull-left\">下载模板</a>");
-    columnsForCompany = [{
+// 在校生列名
+const columnsForStudentInSchool = [
+    {
         checkbox: true,
         visible: false
     }, {
@@ -81,35 +56,119 @@ if (dataId == "2") {
         align: 'center',
     }, {
         field: 'answerNum',
-        title: '答题人编号',
+        title: '学号',
         align: 'center',
-        width: '200px'
-    },
-        {
-            field: 'answerName',
-            title: '用人单位',
-            align: 'center'
-        }, {
-            field: 'answerBelong',
-            title: '学校',
-            align: 'center'
-        }, {
-            field: 'answerPhone',
-            title: '手机号码',
-            align: 'center'
-        },
-        {
-            field: 'answerEmail',
-            title: '邮箱',
-            align: 'center'
-        }, {
-            field: 'operation',
-            title: '操作',
-            align: 'center',
-            events: operateEvents,//给按钮注册事件
-            formatter: addFunctionAlty//表格中增加按钮
-        }]
+        // width: '200px'
+    }, {
+        field: 'answerName',
+        title: '姓名',
+        align: 'center'
+    }, {
+        field: 'answerSchool',
+        title: '学校',
+        align: 'center'
+    }, {
+        field: 'answerMajor',
+        title: '专业',
+        align: 'center'
+    },{
+        field: 'answerGender',
+        title: '性别',
+        align: 'center'
+    },{
+        field: 'answerWeixin',
+        title: '微信号',
+        align: 'center'
+    },{
+        field: 'answerQQ',
+        title: 'qq号',
+        align: 'center'
+    },{
+        field: 'answerPhone',
+        title: '手机号',
+        align: 'center'
+    }, {
+        field: 'answerEmail',
+        title: '电子邮箱',
+        align: 'center'
+    }, {
+        field: 'operation',
+        title: '操作',
+        align: 'center',
+        events: operateEvents,//给按钮注册事件
+        formatter: addFunctionAlty//表格中增加按钮
+    }
+];
+
+// 教师列名
+const columnsForTeacher = [
+    {
+        checkbox: true,
+        visible: false
+    }, {
+        field: 'no',
+        title: '序号',
+        align: 'center',
+    }, {
+        field: 'answerNum',
+        title: '教师号',
+        align: 'center',
+        // width: '200px'
+    }, {
+        field: 'answerName',
+        title: '姓名',
+        align: 'center'
+    }, {
+        field: 'answerBelong',
+        title: '所属院校',
+        align: 'center'
+    }, {
+        field: 'answerGender',
+        title: '性别',
+        align: 'center'
+    },{
+        field: 'answerWeixin',
+        title: '微信号',
+        align: 'center'
+    },{
+        field: 'answerQQ',
+        title: 'qq号',
+        align: 'center'
+    }, {
+        field: 'answerEmail',
+        title: '电子邮箱',
+        align: 'center'
+    }, {
+        field: 'operation',
+        title: '操作',
+        align: 'center',
+        events: operateEvents,//给按钮注册事件
+        formatter: addFunctionAlty//表格中增加按钮
+    }
+];
+
+var usedColumns;
+
+
+if (dataId === "2") {
+    $("#getDownLoadBtn").prepend("<a style=\"margin-right: 20px;\" href=\"../在校生上传数据模板.xlsx\" class=\"add__batches pull-left\">下载模板</a>");
+    usedColumns = columnsForStudentInSchool;
+} else if (dataId === "4") {
+    $("#getDownLoadBtn").prepend("<a style=\"margin-right: 20px;\" href=\"../教师上传数据模板.xlsx\" class=\"add__batches pull-left\">下载模板</a>");
+    usedColumns = columnsForTeacher;
 }
+
+
+
+// if (dataId == "2") {
+//     $("#getDownLoadBtn").prepend("<a style=\"margin-right: 20px;\" href=\"../在校生上传数据模板.xlsx\" class=\"add__batches pull-left\">下载模板</a>");
+// } else if (dataId == "3") {
+//     $("#getDownLoadBtn").prepend("<a style=\"margin-right: 20px;\" href=\"../毕业生上传数据模板.xlsx\" class=\"add__batches pull-left\">下载模板</a>");
+// } else if (dataId == "4") {
+//     $("#getDownLoadBtn").prepend("<a style=\"margin-right: 20px;\" href=\"../教师上传数据模板.xlsx\" class=\"add__batches pull-left\">下载模板</a>");
+// } else if (dataId == "5") {
+//     $("#getDownLoadBtn").prepend("<a style=\"margin-right: 20px;\" href=\"../用人单位上传数据模板.xlsx\" class=\"add__batches pull-left\">下载模板</a>");
+// }
 
 // 发送方式，短信：0； 邮件：1； 链接：2；
 var sendType = '0';
@@ -117,8 +176,9 @@ var shortUrl = '';
 var previewUrl = '';
 var objLength;
 var objLength1;
+
 //默认顶部导航栏的显示
-if(getCookie("changeTableType") == "shortMessageSend"){   //从已发问卷页面点击进入的问卷发布页面
+if (getCookie("changeTableType") == "shortMessageSend") {   //从已发问卷页面点击进入的问卷发布页面
     deleteCookie("changeTableType");
     document.getElementById('linkSendA').style.backgroundColor = "#fff";
     document.getElementById('linkSendA').removeAttribute("class", "inside-wrapper nav-show nav-items clicked linkCode-icon");
@@ -136,7 +196,8 @@ if(getCookie("changeTableType") == "shortMessageSend"){   //从已发问卷页�
         wordStatic(msg);
     }
 
-}else{ //正常进入
+}
+else { //正常进入
     document.getElementById('linkSendA').style.backgroundColor = "#1ea0fa";
     document.getElementById('linkSendA').removeAttribute("class", "inside-wrapper nav-show nav-items linkCode-icon");
     document.getElementById('linkSendA').setAttribute("class", "inside-wrapper nav-show nav-items clicked linkCode-icon");
@@ -176,7 +237,7 @@ function TableInit() {
             showToggle: false,
             minimumCountColumns: 2,             //最少允许的列数
             uniqueId: "no",                     //每一行的唯一标识，一般为主键列
-            columns: columnsForCompany
+            columns: usedColumns
         });
     };
 
@@ -305,6 +366,7 @@ function test(value) {
 
 //上传文件
 function addFile() {
+    // debugger
     document.getElementById("image").click();
 }
 
@@ -338,9 +400,39 @@ function getQuestionInfo() {
     });
 }
 
+
+function mapper (person) {
+    var ret = {
+        'answerNum': '',
+        'answerName': '',
+        'answerSchool': '',
+        'answerMajor': '',
+        'answerGender': '',
+        'answerWeixin': '',
+        'answerQQ': '',
+        'answerPhone': '',
+        'answerBelong': ''
+    };
+
+    if(person.hasOwnProperty("学号")) ret.answerNum = person.学号;
+    if(person.hasOwnProperty("姓名")) ret.answerName = person.姓名;
+    if(person.hasOwnProperty("学校")) ret.answerSchool = person.学校;
+    if(person.hasOwnProperty("专业")) ret.answerMajor = person.专业;
+    if(person.hasOwnProperty("性别")) ret.answerGender = person.性别;
+    if(person.hasOwnProperty("微信号")) ret.answerWeixin = person.微信号;
+    if(person.hasOwnProperty("qq号")) ret.answerQQ = person.qq号;
+    if(person.hasOwnProperty("手机号")) ret.answerPhone = person.手机号;
+    if(person.hasOwnProperty("电子邮箱")) ret.answerEmail = person.电子邮箱;
+
+    if(person.hasOwnProperty("教师号")) ret.answerNum = person.教师号;
+    if(person.hasOwnProperty("所属院校")) ret.answerBelong = person.所属院校;
+
+    return ret;
+}
+
 //读取上传的excel表格中的内容
 $('#image').change(function (e) {
-    debugger;
+    // debugger;
     var files = e.target.files;
     var fileReader = new FileReader();
     fileReader.onload = function (ev) {
@@ -364,15 +456,18 @@ $('#image').change(function (e) {
                 break; // 如果只取第一张表，就取消注释这行
             }
         }
+        // console.log(persons);
         if (persons.length != 0) {
-            if (!persons[0].no || !persons[0].answerNum || !persons[0].answerName || !persons[0].answerBelong || !persons[0].answerPhone || !persons[0].answerEmail) {
-                layer.msg('数据模板不正确');
-
-                return
-            }
+            // if (!persons[0].no || !persons[0].answerNum || !persons[0].answerName || !persons[0].answerBelong || !persons[0].answerPhone || !persons[0].answerEmail) {
+            //     layer.msg('数据模板不正确');
+            //
+            //     return
+            // }
             _$("#userInfoTable").bootstrapTable('removeAll');
             //传入参数
             for (var i = 0; i < persons.length; i++) {
+                persons[i] = mapper(persons[i]);
+                persons[i].no = i + 1;
                 _$("#userInfoTable").bootstrapTable('insertRow', {index: i, row: persons[i]});
                 if (i == persons.length - 1) {
                     if (files) {

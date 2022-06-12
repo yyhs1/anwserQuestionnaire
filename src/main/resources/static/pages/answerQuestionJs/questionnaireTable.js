@@ -322,6 +322,21 @@ function changeQuestionnaireStatus (questionnaireId) {
 
 // 进入到发送、编辑、预览问卷界面
 function questionnaireDetail (questionnaireId) {
+    var dataId;
+    var questionName;
+    commonAjaxPost(false, "/queryQuestionnaireById", {id: questionnaireId}, function (result) {
+        if (result.code === "666") {
+            var data = result.data;
+            dataId = data.dataId;
+            questionName = data.questionName;
+        } else {
+            layer.msg(result.msg);
+        }
+    });
+
     setCookie('questionnaireId', questionnaireId);
+    setCookie('dataId', dataId);
+    setCookie('nameOfQuestionnaire', questionName);
+
     window.parent.open('sendQuestionnaire.html');
 }
