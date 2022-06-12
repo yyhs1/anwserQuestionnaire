@@ -335,6 +335,7 @@ function questionnaireDetail (questionnaireId) {
     });
 
     setCookie('questionnaireId', questionnaireId);
+    setCookie('questionId', questionnaireId);
     setCookie('dataId', dataId);
     setCookie('nameOfQuestionnaire', questionName);
 
