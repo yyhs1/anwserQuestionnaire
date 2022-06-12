@@ -316,21 +316,27 @@ function send(value) {
 
         document.getElementById('myLittleTip').style.display = 'none';
         document.getElementById('ctl02_ContentPlaceHolder1_btnSend').style.display = '';
-    } else if (value == 1) {
+    }
+    else if (value == 1) { // 邮件发送
         sendType = '1';
         //短信内容隐藏
-        document.getElementById('sendKind').style.display = 'none'
-        document.getElementById('sendContent').style.display = 'none'
-        document.getElementById('sendTimeChoose').style.display = 'none'
-        //    邮箱方式显示
+        // document.getElementById('sendKind').style.display = 'none'
+        // document.getElementById('sendContent').style.display = 'none'
+        // document.getElementById('sendTimeChoose').style.display = 'none'
+        // 邮箱方式显示
         document.getElementById('sendMailContent').style.display = 'block'
-        //    链接方式隐藏
-        document.getElementById('sendUrlContent').style.display = 'none'
-        //    发送按钮
+        // 链接方式隐藏
+        // document.getElementById('sendUrlContent').style.display = 'none'
+
+        // qq、微信方式隐藏
+        document.getElementById('tencentContent').style.display = 'none'
+
+        // 发送按钮
         document.getElementById('sendButton').style.display = 'block'
         document.getElementById('myLittleTip').style.display = 'none';
         document.getElementById('ctl02_ContentPlaceHolder1_btnSend').style.display = '';
-    } else {
+    }
+    else if(value == 2) {
         sendType = '2';
         //短信内容隐藏
         document.getElementById('sendKind').style.display = 'none'
@@ -347,6 +353,31 @@ function send(value) {
         document.getElementById('myLittleTip').style.display = '';
         document.getElementById('ctl02_ContentPlaceHolder1_btnSend').style.display = 'none';
 
+    }
+    else if (value == 3) { //
+
+        sendType = '3';
+
+        getQrcode();
+
+        // 邮箱方式隐藏
+        document.getElementById('sendMailContent').style.display = 'none'
+
+        // qq、微信方式开启
+        document.getElementById('tencentContent').style.display = 'block'
+
+    }
+    else if (value == 4) {
+
+        sendType = '4';
+
+        getQrcode();
+
+        // 邮箱方式隐藏
+        document.getElementById('sendMailContent').style.display = 'none'
+
+        // qq、微信方式开启
+        document.getElementById('tencentContent').style.display = 'block'
     }
 }
 
@@ -555,7 +586,9 @@ function layOutSend() {
                 }
             });
         }
-    } else if (sendType == '1') {   //邮箱发送方式
+    }
+    else if (sendType == '1') {
+        //邮箱发送方式
         //邮件标题
         var emailTitle = document.getElementById("ctl02_ContentPlaceHolder1_txtEmailTitle").value;
         //邮件发送富文本内容
@@ -622,6 +655,53 @@ function layOutSend() {
             });
         }
     }
+    else if(sendType == '3') {
+        //qq
+
+        var p = {
+            url: 'http://localhost:8085/previewQuestionnaire.html?id=' + questionId,/*获取URL，可加上来自分享到QQ标识，方便统计*/
+            desc: '来自问卷星的分享', /*分享理由(风格应模拟用户对话),支持多分享语随机展现（使用|分隔）*/
+            // title : title,/*分享标题(可选)*/
+            // summary : title,/*分享描述(可选)*/
+            // pics : pic,/*分享图片(可选)*/
+            // flash : '', /*视频地址(可选)*/
+            //commonClient : true, /*客户端嵌入标志*/
+            site: '问卷星'/*分享来源 (可选) ，如：QQ分享*/
+        };
+
+        var s = [];
+        for (var i in p) {
+            s.push(i + '=' + encodeURIComponent(p[i] || ''));
+        }
+
+        var target_url = "http://connect.qq.com/widget/shareqq/iframe_index.html?" + s.join('&') ;
+        window.open(target_url, 'qq',
+            'height=520, width=720');
+
+    }
+    else if(sendType == '4'){
+        //微信
+        var p = {
+            url: 'http://localhost:8085/previewQuestionnaire.html?id=' + questionId,/*获取URL，可加上来自分享到QQ标识，方便统计*/
+            desc: '来自问卷星的分享', /*分享理由(风格应模拟用户对话),支持多分享语随机展现（使用|分隔）*/
+            // title : title,/*分享标题(可选)*/
+            // summary : title,/*分享描述(可选)*/
+            // pics : pic,/*分享图片(可选)*/
+            // flash : '', /*视频地址(可选)*/
+            //commonClient : true, /*客户端嵌入标志*/
+            site: '问卷星'/*分享来源 (可选) ，如：QQ分享*/
+        };
+
+        var s = [];
+        for (var i in p) {
+            s.push(i + '=' + encodeURIComponent(p[i] || ''));
+        }
+
+        var target_url = "http://connect.qq.com/widget/shareqq/iframe_index.html?" + s.join('&') ;
+        window.open(target_url, 'qq',
+            'height=520, width=720');
+    }
+
 }
 
 //保存问卷信息
@@ -704,34 +784,45 @@ function layOutHold(falg) {
 //生成二维码
 function getQrcode() {
     _$("#ctl02_ContentPlaceHolder1_imgQrcode").empty();
-    var url = '/getShortUrlForLink';
-    var da = {
-        'id': questionId,
-        'link': "222"
-    };
-    // //console.log(da);
-    _$.ajax({
-        url: httpRequestUrl + url,
-        type: "POST",
-        data: JSON.stringify(da),
-        dataType: "json",
-        contentType: "application/json",
-        success: function (res) {
-            // //console.log(res);
-            var resData = JSON.parse(res.data);
-            shortUrl = resData.tinyurl;
-            document.getElementById('ctl02_ContentPlaceHolder1_txtLink').value = shortUrl;
-            // $('#code').qrcode(); //任意字符串
-            _$("#ctl02_ContentPlaceHolder1_imgQrcode").qrcode({
-                width: 100, //宽度
-                height: 100, //高度
-                text: shortUrl    //任意内容
-            })
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            // alert(jqXHR);
-        },
+
+    var url = "http://localhost:8085/previewQuestionnaire.html?id=" + questionId;
+
+    document.getElementById('ctl02_ContentPlaceHolder1_txtLink').value = url;
+
+    _$("#ctl02_ContentPlaceHolder1_imgQrcode").qrcode({
+        width: 100, //宽度
+        height: 100, //高度
+        text: url    //任意内容
     });
+
+    // var url = '/getShortUrlForLink';
+    // var da = {
+    //     'id': questionId,
+    //     'link': "222"
+    // };
+    // //console.log(da);
+    // _$.ajax({
+    //     url: httpRequestUrl + url,
+    //     type: "POST",
+    //     data: JSON.stringify(da),
+    //     dataType: "json",
+    //     contentType: "application/json",
+    //     success: function (res) {
+    //         // //console.log(res);
+    //         var resData = JSON.parse(res.data);
+    //         shortUrl = resData.tinyurl;
+    //         document.getElementById('ctl02_ContentPlaceHolder1_txtLink').value = shortUrl;
+    //         // $('#code').qrcode(); //任意字符串
+    //         _$("#ctl02_ContentPlaceHolder1_imgQrcode").qrcode({
+    //             width: 100, //宽度
+    //             height: 100, //高度
+    //             text: shortUrl    //任意内容
+    //         })
+    //     },
+    //     error: function (jqXHR, textStatus, errorThrown) {
+    //         // alert(jqXHR);
+    //     },
+    // });
 }
 
 function gotoPreview() {
