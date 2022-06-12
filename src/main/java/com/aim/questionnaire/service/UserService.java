@@ -60,7 +60,7 @@ public class UserService {
         String id = UUIDUtil.getOneUUID();
         map.put("id", id);
         //创建时间
-        Date date = DateUtil.getCreateTime();
+        Date date = DateUtil.getCurrentTime();
         map.put("creationDate", date);
         map.put("lastUpdateDate", date);
         //创建人

@@ -26,6 +26,24 @@ public class ProjectService {
     @Autowired
     private QuestionnaireEntityMapper questionnaireEntityMapper;
 
+//    /**
+//     * 查询项目项目是否含有正在进行中的问卷
+//     * @param projectId
+//     * @return
+//     */
+//    public boolean isProjectHasOpenQuestionnaire(String projectId) {
+//        List<Map<String, Object>> list = questionnaireEntityMapper.selectQuestionnaireByProjectId(projectId);
+//        Date currentTime = new Date();
+//        for(Map<String, Object> map  : list) {
+//            Date endTime = (Date) map.get("endTime");
+//            Date startTime = (Date) map.get("startTime");
+//            if(startTime.compareTo(currentTime) <= 0 && endTime.compareTo(currentTime) >= 0) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+
     /**
      * 查询项目项目是否含有正在进行中的问卷
      * @param projectId
@@ -33,11 +51,8 @@ public class ProjectService {
      */
     public boolean isProjectHasOpenQuestionnaire(String projectId) {
         List<Map<String, Object>> list = questionnaireEntityMapper.selectQuestionnaireByProjectId(projectId);
-        Date currentTime = new Date();
         for(Map<String, Object> map  : list) {
-            Date endTime = (Date) map.get("endTime");
-            Date startTime = (Date) map.get("startTime");
-            if(startTime.compareTo(currentTime) <= 0 && endTime.compareTo(currentTime) >= 0) {
+            if(((String) map.get("questionStop")).equals("0")) {
                 return true;
             }
         }
@@ -63,7 +78,7 @@ public class ProjectService {
         projectEntity.setUserId(userId);
 
         //创建时间
-        Date date = DateUtil.getCreateTime();
+        Date date = DateUtil.getCurrentTime();
         projectEntity.setCreationDate(date);
         projectEntity.setLastUpdateDate(date);
 
@@ -84,7 +99,7 @@ public class ProjectService {
         projectEntity.setUserId(map.get("userId").toString());
 
         //创建时间
-        Date date = DateUtil.getCreateTime();
+        Date date = DateUtil.getCurrentTime();
         projectEntity.setLastUpdateDate(date);
 
         return projectEntityMapper.updateProjectById(projectEntity);
@@ -97,6 +112,7 @@ public class ProjectService {
      * @return
      */
     public int deleteProjectById(ProjectEntity projectEntity) {
+        questionnaireEntityMapper.deleteByProjectId(projectEntity.getId());
         return projectEntityMapper.deleteProjectById(projectEntity);
     }
 
