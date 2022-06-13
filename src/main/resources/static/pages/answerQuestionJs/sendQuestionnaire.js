@@ -494,6 +494,7 @@ $('#image').change(function (e) {
             //
             //     return
             // }
+            _$.cookie(questionId, persons.length);
             _$("#userInfoTable").bootstrapTable('removeAll');
             //传入参数
             for (var i = 0; i < persons.length; i++) {

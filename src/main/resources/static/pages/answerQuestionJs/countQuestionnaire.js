@@ -2,12 +2,35 @@
  * Created by Amy on 2018/8/13.
  */
 
+var questionnaireId = getCookie("questionnaireId");
+
 $(function () {
     $("#questionNameCount").html( getCookie("nameOfQuestionnaire") + "数量统计");
     $("#questionNameDetail").html( getCookie("nameOfQuestionnaire") + "学校答题情况明细");
 
     var oTable = new TableInit();
     oTable.Init();
+
+    var allAnswer;
+    commonAjaxPost(false, "/queryQuestionnaireById", {id: questionnaireId}, function (result) {
+        if (result.code === "666") {
+            var data = result.data;
+            allAnswer = JSON.parse(data.answerTotal);
+        } else {
+            layer.msg(result.msg);
+        }
+    });
+
+    // console.log(allAnswer);
+
+    var testData = {
+        'school': '东北大学',
+        'rate': '2%',
+        'receivedCount': 2,
+        'sendCount': 98,
+    }
+
+    $("#countTable").bootstrapTable('insertRow', {index: 1, row: testData});
 
 //        添加下拉选择问卷
     var selectContent = ''; //下拉选择内容
@@ -45,37 +68,63 @@ $("#ddlActivitynew").change(function () {
 
 // XXX问卷数量统计
 function getQuestionnaireCount() {
-    var url = '/queryQuestionnaireCount';
-    var data = {
-        "questionId": getCookie("questionId")
-    };
-    commonAjaxPost(true, url, data, function (result) {
-        if (result.code == "666") {
+    // var url = '/queryQuestionnaireCount';
+    // var data = {
+    //     "questionId": getCookie("questionId")
+    // };
+    // commonAjaxPost(true, url, data, function (result) {
+    //     if (result.code == "666") {
+    //         $("#example1Tr1").empty();
+    //         var questCountData = result.data;
+    //         var text = "";
+    //         text += "<tr>";
+    //         text += "<td>" + questCountData.dataName + "</td>";
+    //         text += "<td>" + questCountData.questionCount + "</td>";
+    //         text += "<td>" + questCountData.answerTotal + "</td>";
+    //         if (questCountData.answerRate == "�") {
+    //             text += "<td>-</td>";
+    //         } else {
+    //             text += "<td>" + questCountData.answerRate + "</td>";
+    //         }
+    //         text += "<td>" + questCountData.effectiveAnswer + "</td>";
+    //         text += "</tr>";
+    //         $("#example1Tr1").append(text);
+    //
+    //     } else if (result.code == "333") {
+    //         layer.msg(result.message, {icon: 2});
+    //         setTimeout(function () {
+    //             window.location.href = 'login.html';
+    //         }, 1000)
+    //     } else {
+    //         layer.msg(result.message, {icon: 2})
+    //     }
+    // });
+    commonAjaxPost(false, "/queryQuestionnaireById", {id: questionnaireId}, function (result) {
+        if (result.code === "666") {
+            var data = result.data;
+            var allAnswer = JSON.parse(data.answerTotal);
             $("#example1Tr1").empty();
-            var questCountData = result.data;
             var text = "";
             text += "<tr>";
-            text += "<td>" + questCountData.dataName + "</td>";
-            text += "<td>" + questCountData.questionCount + "</td>";
-            text += "<td>" + questCountData.answerTotal + "</td>";
-            if (questCountData.answerRate == "�") {
-                text += "<td>-</td>";
-            } else {
-                text += "<td>" + questCountData.answerRate + "</td>";
+            if(data.dataId == 2) {
+                text += "<td>" + '在校生' + "</td>";
+            } else if(data.dataId == 4){
+                text += "<td>" + '教师' + "</td>";
             }
-            text += "<td>" + questCountData.effectiveAnswer + "</td>";
+            text += "<td>" + allAnswer.length + "</td>";
+            text += "<td>" + getCookie(questionnaireId) + "</td>";
+
+            text += "<td>" + Math.round(parseInt(allAnswer.length) / parseInt(getCookie(questionnaireId)) * 100) + '%' + "</td>";
+
+            text += "<td>" + allAnswer.length + "</td>";
             text += "</tr>";
             $("#example1Tr1").append(text);
-
-        } else if (result.code == "333") {
-            layer.msg(result.message, {icon: 2});
-            setTimeout(function () {
-                window.location.href = 'login.html';
-            }, 1000)
         } else {
-            layer.msg(result.message, {icon: 2})
+            layer.msg(result.msg);
         }
-    })
+    });
+
+
 }
 
 // XXX问卷学校答题情况明细
@@ -83,15 +132,42 @@ function getQuestionnaireAboutSchool() {
     $("#countTable").bootstrapTable('refresh');
 }
 
+const columnsForGroupBySchool = [
+    {
+        checkbox: true,
+        visible: false
+    }, {
+        field: 'no',
+        title: '序号',
+        align: 'center',
+    }, {
+        field: 'school',
+        title: '学校',
+        align: 'center',
+        // width: '200px'
+    }, {
+        field: 'rate',
+        title: '回收率',
+        align: 'center'
+    }, {
+        field: 'receivedCount',
+        title: '答卷回收数',
+        align: 'center'
+    }, {
+        field: 'sendCount',
+        title: '答卷发放数',
+        align: 'center'
+    }
+];
 
-
+// 学校答题情况明细 表格初始化
 function TableInit() {
 
     var oTableInit = new Object();
     //初始化Table
     oTableInit.Init = function () {
         $('#countTable').bootstrapTable({
-            url: httpRequestUrl + '/queryQuestionnaireAboutSchool',         //请求后台的URL（*）
+            // url: httpRequestUrl + '/queryQuestionnaireAboutSchool',         //请求后台的URL（*）
             method: 'POST',                      //请求方式（*）
             striped: true,                      //是否显示行间隔色
             pagination: true,                   //是否显示分页（*）
@@ -113,84 +189,51 @@ function TableInit() {
             showToggle: false,
             minimumCountColumns: 2,             //最少允许的列数
             uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+            columns: columnsForGroupBySchool,
 
-            columns: [{
-                checkbox: true,
-                visible: false
-            }, {
-                field: 'id',
-                title: '序号',
-                align: 'center',
-                formatter: function (value, row, index) {
-                    return index + 1;
-                }
-            },
-                {
-                    field: 'answerBelong',
-                    title: '学校',
-                    align: 'center',
-                    width: '230px',
-                    sortable: true
-                },
-                {
-                    field: 'answerRate',
-                    title: '回收率',
-                    align: 'center',
-                    sortable: true
-                }, {
-                    field: 'effectiveAnswer',
-                    title: '答卷回收数',
-                    align: 'center',
-                    sortable: true
-                }, {
-                    field: 'answerTotal',
-                    title: '答卷发放数',
-                    align: 'center',
-                    sortable: true
-                }],
-            responseHandler: function (res) {
-                //console.log(res);
-                if (res.code == "666") {
-                    var userInfo = res.data.list;
-                    var NewData = [];
-                    if (userInfo.length) {
-                        for (var i = 0; i < userInfo.length; i++) {
-                            var dataNewObj = {
-                                'id': '',
-                                "answerBelong": '',
-                                'answerRate': '',
-                                "effectiveAnswer": '',
-                                'answerTotal': ''
-                            };
-
-                            dataNewObj.id = userInfo[i].id;
-                            dataNewObj.answerBelong = userInfo[i].answerBelong;
-                            dataNewObj.answerRate = userInfo[i].answerRate;
-                            dataNewObj.effectiveAnswer = userInfo[i].effectiveAnswer;
-                            dataNewObj.answerTotal = userInfo[i].answerTotal;
-                            NewData.push(dataNewObj);
-                        }
-                        var data = {
-                            total: res.data.total,
-                            rows: NewData
-                        };
-
-                        //console.log(NewData)
-                    } else {
-                        var data = {
-                            rows: NewData
-                        };
-                    }
-                    return data;
-                } else {
-                    var data = {
-                        rows: []
-                    };
-                    return data;
-
-                }
-
-            }
+            // responseHandler: function (res) {
+            //     //console.log(res);
+            //     if (res.code === "666") {
+            //         var userInfo = res.data.list;
+            //         var NewData = [];
+            //         if (userInfo.length) {
+            //             for (var i = 0; i < userInfo.length; i++) {
+            //                 var dataNewObj = {
+            //                     'id': '',
+            //                     "answerBelong": '',
+            //                     'answerRate': '',
+            //                     "effectiveAnswer": '',
+            //                     'answerTotal': ''
+            //                 };
+            //
+            //                 dataNewObj.id = userInfo[i].id;
+            //                 dataNewObj.answerBelong = userInfo[i].answerBelong;
+            //                 dataNewObj.answerRate = userInfo[i].answerRate;
+            //                 dataNewObj.effectiveAnswer = userInfo[i].effectiveAnswer;
+            //                 dataNewObj.answerTotal = userInfo[i].answerTotal;
+            //                 NewData.push(dataNewObj);
+            //             }
+            //             var data = {
+            //                 total: res.data.total,
+            //                 rows: NewData
+            //             };
+            //
+            //             //console.log(NewData)
+            //         } else {
+            //             var data = {
+            //                 rows: NewData
+            //             };
+            //         }
+            //         return data;
+            //     } else {
+            //         var data = {
+            //             rows: []
+            //         };
+            //         return data;
+            //
+            //     }
+            //
+            // }
         });
     };
 
