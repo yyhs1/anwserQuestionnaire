@@ -288,71 +288,70 @@
                                             <div class="form-group">
                                                 <label class="control-label fontWeight">发送方式</label>
                                                 <span style="padding-left: 23px;">
-                                                  <input type="radio" name="sendtype" value="0" onclick="send('0')"
-                                                         checked>&nbsp;短信&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <input type="radio" name="sendtype" value="1" onclick="send('1')">&nbsp;邮件&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <input type="radio" name="sendtype" value="2" onclick="send('2')">&nbsp;链接
+<!--                                                  <input type="radio" name="sendtype" value="0" onclick="send('0')" checked>&nbsp;短信&nbsp;&nbsp;&nbsp;&nbsp;-->
+                                                    <input type="radio" name="sendtype" value="1" onclick="send('1')" checked>&nbsp;邮件&nbsp;&nbsp;&nbsp;&nbsp;
+<!--                                                    <input type="radio" name="sendtype" value="2" onclick="send('2')">&nbsp;链接-->
+                                                    <input type="radio" name="sendtype" value="3" onclick="send('3')">&nbsp;QQ&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <input type="radio" name="sendtype" value="4" onclick="send('4')">&nbsp;微信&nbsp;&nbsp;&nbsp;&nbsp;
                                                 </span>
 
                                             </div>
-                                            <!--短信发送-->
-                                            <div class="form-group" id="sendKind">
-                                                <label class="control-label fontWeight">发布模式</label>
-                                                <span style="padding-left: 23px;">
-                                                  <input type="radio" name="sendTime" value="0" onclick="test('0')"
-                                                         checked>立即发布&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <input type="radio" name="sendTime" value="1" onclick="test('1')">定时发布
-                                                </span>
+                                            <!--发布模式（立即发布、定时发布）-->
+<!--                                            <div class="form-group" id="sendKind">-->
+<!--                                                <label class="control-label fontWeight">发布模式</label>-->
+<!--                                                <span style="padding-left: 23px;">-->
+<!--                                                  <input type="radio" name="sendTime" value="0" onclick="test('0')"-->
+<!--                                                         checked>立即发布&nbsp;&nbsp;&nbsp;&nbsp;-->
+<!--                                                    <input type="radio" name="sendTime" value="1" onclick="test('1')">定时发布-->
+<!--                                                </span>-->
+<!--                                            </div>-->
 
-                                            </div>
                                             <!--短信发送-->
-                                            <div class="form-group" id="sendTimeChoose" style="display: none">
-                                                <label class="control-label fontWeight">发布时间</label>
-                                                <span style="padding-left: 23px;">
-                                                    <!--<label class="control-label time-g">开始时间：</label>-->
-                                                    <input id="scheduledEndTime" class="time-g"
-                                                           style="height:32px;padding-left: 20px;border-radius: 4px;border: 1px solid #abafb2">
-                                                </span>
-                                            </div>
+<!--                                            <div class="form-group" id="sendTimeChoose" style="display: none">-->
+<!--                                                <label class="control-label fontWeight">发布时间</label>-->
+<!--                                                <span style="padding-left: 23px;">-->
+<!--                                                    &lt;!&ndash;<label class="control-label time-g">开始时间：</label>&ndash;&gt;-->
+<!--                                                    <input id="scheduledEndTime" class="time-g"-->
+<!--                                                           style="height:32px;padding-left: 20px;border-radius: 4px;border: 1px solid #abafb2">-->
+<!--                                                </span>-->
+<!--                                            </div>-->
                                             <div class="form-group">
-                                                <span style="color:red">*</span><label for="tipT"
-                                                                                       class="control-label fontWeight">答卷结束提示</label>
+                                                <span style="color:red">*</span><label for="tipT" class="control-label fontWeight">答卷结束提示</label>
                                                 <span id="myLittleTip" style="display: none" class="must">注意：请在分享链接前点击保存内容按钮，否则答卷结束可能没有答卷结束提示语</span>
                                                 <div>
-                                                <textarea id="tipT" placeholder="不能超过30字"
-                                                          style="height:50px;width: 750px;border-radius: 4px;border: 1px solid #abafb2;resize:none;padding:6px 12px;margin-top: 15px">
-                                                </textarea>
+                                                <textarea id="tipT" placeholder="不能超过30字" style="height:50px;width: 750px;border-radius: 4px;border: 1px solid #abafb2;resize:none;padding:6px 12px;margin-top: 15px"></textarea>
                                                 </div>
                                             </div>
                                             <!--短信发送-->
-                                            <div class="form-group" id="sendContent">
-                                                <span style="color:red">*</span><label for="msg" class="control-label fontWeight">发布消息内容</label>
-                                                <!--<label class="clearfix">-->
+<!--                                            <div class="form-group" id="sendContent">-->
+<!--                                                <span style="color:red">*</span><label for="msg" class="control-label fontWeight">发布消息内容</label>-->
+<!--                                                &lt;!&ndash;<label class="clearfix">&ndash;&gt;-->
 
-                                                <span class="must" style="margin-left: 10px;font-size: 12px;">注意：请在需要加入姓名、学校名称的位置添加"<em class="blue">【姓名】、【学校名】</em>"，系统将会根据问卷自动进行替换！</span>
-                                                <!--</label>-->
-                                                <div>
-                                                 <textarea class="form-control-t" id="msg" onkeyup="wordStatic(this);"
-                                                          maxlength="38" placeholder="不能超过44字"
-                                                          style="width: 750px;height:100px;border-radius: 4px;border: 1px solid #abafb2;resize:none;padding:6px 12px;margin-top: 15px"></textarea>
-                                               <!--  <textarea class="form-control-t" id="msg" onkeyup="wordStatic(this);"
-                                                          maxlength="38" placeholder="不能超过44字"
-                                                          onchange="this.value=this.value.substring(0, 38)"  
-                                                          onkeydown="this.value=this.value.substring(0, 38)"
-                                                           onkeyup="this.value=this.value.substring(0, 38)"
-                                                          style="width: 750px;height:100px;border-radius: 4px;border: 1px solid #abafb2;resize:none;padding:6px 12px;margin-top: 15px"></textarea> -->
-                                                    <p class="text-count" style="font-size:12px;">
-                                                        <!--输入<span id="txt">0</span>字&nbsp;-->
-                                                        还能输入<span id="Lnum" style="color:red;font-size:12px;"></span>个字,
-                                                        此短信内容将按<span id="num" style="color:red;font-size:12px;">0</span>条短信计费
-                                                    </p>
+<!--                                                <span class="must" style="margin-left: 10px;font-size: 12px;">注意：请在需要加入姓名、学校名称的位置添加"<em class="blue">【姓名】、【学校名】</em>"，系统将会根据问卷自动进行替换！</span>-->
+<!--                                                &lt;!&ndash;</label>&ndash;&gt;-->
+<!--                                                <div>-->
+<!--                                                 <textarea class="form-control-t" id="msg" onkeyup="wordStatic(this);"-->
+<!--                                                          maxlength="38" placeholder="不能超过44字"-->
+<!--                                                          style="width: 750px;height:100px;border-radius: 4px;border: 1px solid #abafb2;resize:none;padding:6px 12px;margin-top: 15px"></textarea>-->
+<!--                                               &lt;!&ndash;  <textarea class="form-control-t" id="msg" onkeyup="wordStatic(this);"-->
+<!--                                                          maxlength="38" placeholder="不能超过44字"-->
+<!--                                                          onchange="this.value=this.value.substring(0, 38)"  -->
+<!--                                                          onkeydown="this.value=this.value.substring(0, 38)"-->
+<!--                                                           onkeyup="this.value=this.value.substring(0, 38)"-->
+<!--                                                          style="width: 750px;height:100px;border-radius: 4px;border: 1px solid #abafb2;resize:none;padding:6px 12px;margin-top: 15px"></textarea> &ndash;&gt;-->
+<!--                                                    <p class="text-count" style="font-size:12px;">-->
+<!--                                                        &lt;!&ndash;输入<span id="txt">0</span>字&nbsp;&ndash;&gt;-->
+<!--                                                        还能输入<span id="Lnum" style="color:red;font-size:12px;"></span>个字,-->
+<!--                                                        此短信内容将按<span id="num" style="color:red;font-size:12px;">0</span>条短信计费-->
+<!--                                                    </p>-->
 
-                                                </div>
-                                            </div>
+<!--                                                </div>-->
+<!--                                            </div>-->
+
                                             <!--邮件发送-->
-                                            <div class="form-group" id="sendMailContent" style="display: none">
+                                            <div class="form-group" id="sendMailContent" style="display: block">
                                                 <span style="color:red">*</span><label for="msg"
-                                                                                       class="control-label fontWeight">邮件内容</label>
+                                                                                       class="control-label fontWeight">邮件标题</label>
                                                 <div>
                                                     <!-- 邮件内容 END -->
                                                     <div class="ui-dialog__section clearfix">
@@ -383,7 +382,36 @@
                                                 </div>
                                             </div>
                                             <!--链接发送-->
-                                            <div class="form-group" id="sendUrlContent" style="display: none">
+<!--                                            <div class="form-group" id="sendUrlContent" style="display: none">-->
+<!--                                                &lt;!&ndash;<span style="color:red">*</span><label for="msg"&ndash;&gt;-->
+<!--                                                <div class="box">-->
+<!--                                                    <div class="link-box clearfix" style="margin-top:0px;">-->
+<!--                                                        <div class="scan-code pull-left">-->
+<!--                                                            <div class="pull-left qrcode-g"-->
+<!--                                                                 id="ctl02_ContentPlaceHolder1_imgQrcode">-->
+<!--                                                            </div>-->
+<!--                                                            &lt;!&ndash;<img src=""&ndash;&gt;-->
+<!--                                                            &lt;!&ndash;class="pull-left"&ndash;&gt;-->
+<!--                                                            &lt;!&ndash;alt="二维码" width="140" height="140">&ndash;&gt;-->
+<!--                                                            <div class="detailed-box pull-right">-->
+<!--                                                        <span class="pull-left strong"-->
+<!--                                                              style="width:130px;">问卷链接与二维码</span>-->
+<!--                                                                <div id="divCopyMsg"-->
+<!--                                                                     style="color: red; font-size: 14px;width:120px;padding-left:10px;"-->
+<!--                                                                     class="pull-left"></div>-->
+<!--                                                                <span class="pull-left" style="margin-bottom: 0px;">-->
+<!--                                        <input name="ctl02$ContentPlaceHolder1$txtLink" type="text"-->
+<!--                                               id="ctl02_ContentPlaceHolder1_txtLink" class="link-input pull-left"-->
+<!--                                               style="width:250px;">-->
+<!--                                        <input id="d_clip_button" type="button" onclick="copyUrl2()" class="MP-button pull-left" value="复制"-->
+<!--                                               data-clipboard-target="#ctl02_ContentPlaceHolder1_txtLink">-->
+<!--                                        <div class="bdsharebuttonbox bdshare-button-style0-24" style="float: left;"-->
+<!--                                             data-bd-bind="1533351170436">-->
+
+<!--                                        </div>-->
+
+                                            <!--qq、微信发送-->
+                                            <div class="form-group" id="tencentContent" style="display: none">
                                                 <!--<span style="color:red">*</span><label for="msg"-->
                                                 <div class="box">
                                                     <div class="link-box clearfix" style="margin-top:0px;">

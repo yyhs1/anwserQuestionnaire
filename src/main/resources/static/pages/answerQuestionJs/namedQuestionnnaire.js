@@ -100,6 +100,7 @@ function quickCreate() {
             'endTime': dateChange(questionendTime),
             'questionStop': '5',
             'dataId': getCookie('dataId'),
+            'answerTotal': '[]',
             // 'projectId': getCookie('projectIdForCreate')
         };
         if (getCookie('TProjectId') != undefined) {    //创建问卷
@@ -114,6 +115,7 @@ function quickCreate() {
         var url = '/queryQuestionnaireById';
         var da = {'id': getCookie('QuestionId')};
         da1 = {
+            'answerTotal': '[]',
             'questionName': questionName,
             'questionContent': questionContent,
             'startTime': dateChange(nowTimeInput),

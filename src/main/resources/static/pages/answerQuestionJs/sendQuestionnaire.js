@@ -24,55 +24,30 @@ window.operateEvents = {
     }
 };
 
-//不是用人单位的列名
-var columnsForCompany =[{
-    checkbox: true,
-    visible: false
-}, {
-    field: 'no',
-    title: '序号',
-    align: 'center',
-}, {
-    field: 'answerNum',
-    title: '答题人编号',
-    align: 'center',
-    width: '200px'
-},
-    {
-        field: 'answerName',
-        title: '姓名',
-        align: 'center'
-    }, {
-        field: 'answerBelong',
-        title: '学校',
-        align: 'center'
-    }, {
-        field: 'answerPhone',
-        title: '手机号码',
-        align: 'center'
-    },
-    {
-        field: 'answerEmail',
-        title: '邮箱',
-        align: 'center'
-    }, {
-        field: 'operation',
-        title: '操作',
-        align: 'center',
-        events: operateEvents,//给按钮注册事件
-        formatter: addFunctionAlty//表格中增加按钮
-    }]
+// const columnsForTest = [
+//     {
+//         checkbox: true,
+//         visible: false
+//     }, {
+//         field: 'no',
+//         title: '序号',
+//         align: 'center',
+//     }, {
+//         field: 'test',
+//         title: '测试',
+//         align: 'center'
+//     }, {
+//         field: 'operation',
+//         title: '操作',
+//         align: 'center',
+//         events: operateEvents,//给按钮注册事件
+//         formatter: addFunctionAlty//表格中增加按钮
+//     }
+// ];
 
-
-if (dataId == "2") {
-    $("#getDownLoadBtn").prepend("<a style=\"margin-right: 20px;\" href=\"../在校生上传数据模板.xlsx\" class=\"add__batches pull-left\">下载模板</a>");
-} else if (dataId == "3") {
-    $("#getDownLoadBtn").prepend("<a style=\"margin-right: 20px;\" href=\"../毕业生上传数据模板.xlsx\" class=\"add__batches pull-left\">下载模板</a>");
-} else if (dataId == "4") {
-    $("#getDownLoadBtn").prepend("<a style=\"margin-right: 20px;\" href=\"../教师上传数据模板.xlsx\" class=\"add__batches pull-left\">下载模板</a>");
-} else if (dataId == "5") {
-    $("#getDownLoadBtn").prepend("<a style=\"margin-right: 20px;\" href=\"../用人单位上传数据模板.xlsx\" class=\"add__batches pull-left\">下载模板</a>");
-    columnsForCompany = [{
+// 在校生列名
+const columnsForStudentInSchool = [
+    {
         checkbox: true,
         visible: false
     }, {
@@ -81,35 +56,119 @@ if (dataId == "2") {
         align: 'center',
     }, {
         field: 'answerNum',
-        title: '答题人编号',
+        title: '学号',
         align: 'center',
-        width: '200px'
-    },
-        {
-            field: 'answerName',
-            title: '用人单位',
-            align: 'center'
-        }, {
-            field: 'answerBelong',
-            title: '学校',
-            align: 'center'
-        }, {
-            field: 'answerPhone',
-            title: '手机号码',
-            align: 'center'
-        },
-        {
-            field: 'answerEmail',
-            title: '邮箱',
-            align: 'center'
-        }, {
-            field: 'operation',
-            title: '操作',
-            align: 'center',
-            events: operateEvents,//给按钮注册事件
-            formatter: addFunctionAlty//表格中增加按钮
-        }]
+        // width: '200px'
+    }, {
+        field: 'answerName',
+        title: '姓名',
+        align: 'center'
+    }, {
+        field: 'answerSchool',
+        title: '学校',
+        align: 'center'
+    }, {
+        field: 'answerMajor',
+        title: '专业',
+        align: 'center'
+    },{
+        field: 'answerGender',
+        title: '性别',
+        align: 'center'
+    },{
+        field: 'answerWeixin',
+        title: '微信号',
+        align: 'center'
+    },{
+        field: 'answerQQ',
+        title: 'qq号',
+        align: 'center'
+    },{
+        field: 'answerPhone',
+        title: '手机号',
+        align: 'center'
+    }, {
+        field: 'answerEmail',
+        title: '电子邮箱',
+        align: 'center'
+    }, {
+        field: 'operation',
+        title: '操作',
+        align: 'center',
+        events: operateEvents,//给按钮注册事件
+        formatter: addFunctionAlty//表格中增加按钮
+    }
+];
+
+// 教师列名
+const columnsForTeacher = [
+    {
+        checkbox: true,
+        visible: false
+    }, {
+        field: 'no',
+        title: '序号',
+        align: 'center',
+    }, {
+        field: 'answerNum',
+        title: '教师号',
+        align: 'center',
+        // width: '200px'
+    }, {
+        field: 'answerName',
+        title: '姓名',
+        align: 'center'
+    }, {
+        field: 'answerBelong',
+        title: '所属院校',
+        align: 'center'
+    }, {
+        field: 'answerGender',
+        title: '性别',
+        align: 'center'
+    },{
+        field: 'answerWeixin',
+        title: '微信号',
+        align: 'center'
+    },{
+        field: 'answerQQ',
+        title: 'qq号',
+        align: 'center'
+    }, {
+        field: 'answerEmail',
+        title: '电子邮箱',
+        align: 'center'
+    }, {
+        field: 'operation',
+        title: '操作',
+        align: 'center',
+        events: operateEvents,//给按钮注册事件
+        formatter: addFunctionAlty//表格中增加按钮
+    }
+];
+
+var usedColumns;
+
+
+if (dataId === "2") {
+    $("#getDownLoadBtn").prepend("<a style=\"margin-right: 20px;\" href=\"../在校生上传数据模板.xlsx\" class=\"add__batches pull-left\">下载模板</a>");
+    usedColumns = columnsForStudentInSchool;
+} else if (dataId === "4") {
+    $("#getDownLoadBtn").prepend("<a style=\"margin-right: 20px;\" href=\"../教师上传数据模板.xlsx\" class=\"add__batches pull-left\">下载模板</a>");
+    usedColumns = columnsForTeacher;
 }
+
+
+
+// if (dataId == "2") {
+//     $("#getDownLoadBtn").prepend("<a style=\"margin-right: 20px;\" href=\"../在校生上传数据模板.xlsx\" class=\"add__batches pull-left\">下载模板</a>");
+// } else if (dataId == "3") {
+//     $("#getDownLoadBtn").prepend("<a style=\"margin-right: 20px;\" href=\"../毕业生上传数据模板.xlsx\" class=\"add__batches pull-left\">下载模板</a>");
+// } else if (dataId == "4") {
+//     $("#getDownLoadBtn").prepend("<a style=\"margin-right: 20px;\" href=\"../教师上传数据模板.xlsx\" class=\"add__batches pull-left\">下载模板</a>");
+// } else if (dataId == "5") {
+//     $("#getDownLoadBtn").prepend("<a style=\"margin-right: 20px;\" href=\"../用人单位上传数据模板.xlsx\" class=\"add__batches pull-left\">下载模板</a>");
+// }
 
 // 发送方式，短信：0； 邮件：1； 链接：2；
 var sendType = '0';
@@ -117,8 +176,9 @@ var shortUrl = '';
 var previewUrl = '';
 var objLength;
 var objLength1;
+
 //默认顶部导航栏的显示
-if(getCookie("changeTableType") == "shortMessageSend"){   //从已发问卷页面点击进入的问卷发布页面
+if (getCookie("changeTableType") == "shortMessageSend") {   //从已发问卷页面点击进入的问卷发布页面
     deleteCookie("changeTableType");
     document.getElementById('linkSendA').style.backgroundColor = "#fff";
     document.getElementById('linkSendA').removeAttribute("class", "inside-wrapper nav-show nav-items clicked linkCode-icon");
@@ -136,7 +196,8 @@ if(getCookie("changeTableType") == "shortMessageSend"){   //从已发问卷页�
         wordStatic(msg);
     }
 
-}else{ //正常进入
+}
+else { //正常进入
     document.getElementById('linkSendA').style.backgroundColor = "#1ea0fa";
     document.getElementById('linkSendA').removeAttribute("class", "inside-wrapper nav-show nav-items linkCode-icon");
     document.getElementById('linkSendA').setAttribute("class", "inside-wrapper nav-show nav-items clicked linkCode-icon");
@@ -176,7 +237,7 @@ function TableInit() {
             showToggle: false,
             minimumCountColumns: 2,             //最少允许的列数
             uniqueId: "no",                     //每一行的唯一标识，一般为主键列
-            columns: columnsForCompany
+            columns: usedColumns
         });
     };
 
@@ -255,21 +316,27 @@ function send(value) {
 
         document.getElementById('myLittleTip').style.display = 'none';
         document.getElementById('ctl02_ContentPlaceHolder1_btnSend').style.display = '';
-    } else if (value == 1) {
+    }
+    else if (value == 1) { // 邮件发送
         sendType = '1';
         //短信内容隐藏
-        document.getElementById('sendKind').style.display = 'none'
-        document.getElementById('sendContent').style.display = 'none'
-        document.getElementById('sendTimeChoose').style.display = 'none'
-        //    邮箱方式显示
+        // document.getElementById('sendKind').style.display = 'none'
+        // document.getElementById('sendContent').style.display = 'none'
+        // document.getElementById('sendTimeChoose').style.display = 'none'
+        // 邮箱方式显示
         document.getElementById('sendMailContent').style.display = 'block'
-        //    链接方式隐藏
-        document.getElementById('sendUrlContent').style.display = 'none'
-        //    发送按钮
+        // 链接方式隐藏
+        // document.getElementById('sendUrlContent').style.display = 'none'
+
+        // qq、微信方式隐藏
+        document.getElementById('tencentContent').style.display = 'none'
+
+        // 发送按钮
         document.getElementById('sendButton').style.display = 'block'
         document.getElementById('myLittleTip').style.display = 'none';
         document.getElementById('ctl02_ContentPlaceHolder1_btnSend').style.display = '';
-    } else {
+    }
+    else if(value == 2) {
         sendType = '2';
         //短信内容隐藏
         document.getElementById('sendKind').style.display = 'none'
@@ -286,6 +353,31 @@ function send(value) {
         document.getElementById('myLittleTip').style.display = '';
         document.getElementById('ctl02_ContentPlaceHolder1_btnSend').style.display = 'none';
 
+    }
+    else if (value == 3) { //
+
+        sendType = '3';
+
+        getQrcode();
+
+        // 邮箱方式隐藏
+        document.getElementById('sendMailContent').style.display = 'none'
+
+        // qq、微信方式开启
+        document.getElementById('tencentContent').style.display = 'block'
+
+    }
+    else if (value == 4) {
+
+        sendType = '4';
+
+        getQrcode();
+
+        // 邮箱方式隐藏
+        document.getElementById('sendMailContent').style.display = 'none'
+
+        // qq、微信方式开启
+        document.getElementById('tencentContent').style.display = 'block'
     }
 }
 
@@ -305,6 +397,7 @@ function test(value) {
 
 //上传文件
 function addFile() {
+    // debugger
     document.getElementById("image").click();
 }
 
@@ -338,9 +431,39 @@ function getQuestionInfo() {
     });
 }
 
+
+function mapper (person) {
+    var ret = {
+        'answerNum': '',
+        'answerName': '',
+        'answerSchool': '',
+        'answerMajor': '',
+        'answerGender': '',
+        'answerWeixin': '',
+        'answerQQ': '',
+        'answerPhone': '',
+        'answerBelong': ''
+    };
+
+    if(person.hasOwnProperty("学号")) ret.answerNum = person.学号;
+    if(person.hasOwnProperty("姓名")) ret.answerName = person.姓名;
+    if(person.hasOwnProperty("学校")) ret.answerSchool = person.学校;
+    if(person.hasOwnProperty("专业")) ret.answerMajor = person.专业;
+    if(person.hasOwnProperty("性别")) ret.answerGender = person.性别;
+    if(person.hasOwnProperty("微信号")) ret.answerWeixin = person.微信号;
+    if(person.hasOwnProperty("qq号")) ret.answerQQ = person.qq号;
+    if(person.hasOwnProperty("手机号")) ret.answerPhone = person.手机号;
+    if(person.hasOwnProperty("电子邮箱")) ret.answerEmail = person.电子邮箱;
+
+    if(person.hasOwnProperty("教师号")) ret.answerNum = person.教师号;
+    if(person.hasOwnProperty("所属院校")) ret.answerBelong = person.所属院校;
+
+    return ret;
+}
+
 //读取上传的excel表格中的内容
 $('#image').change(function (e) {
-    debugger;
+    // debugger;
     var files = e.target.files;
     var fileReader = new FileReader();
     fileReader.onload = function (ev) {
@@ -364,15 +487,19 @@ $('#image').change(function (e) {
                 break; // 如果只取第一张表，就取消注释这行
             }
         }
+        // console.log(persons);
         if (persons.length != 0) {
-            if (!persons[0].no || !persons[0].answerNum || !persons[0].answerName || !persons[0].answerBelong || !persons[0].answerPhone || !persons[0].answerEmail) {
-                layer.msg('数据模板不正确');
-
-                return
-            }
+            // if (!persons[0].no || !persons[0].answerNum || !persons[0].answerName || !persons[0].answerBelong || !persons[0].answerPhone || !persons[0].answerEmail) {
+            //     layer.msg('数据模板不正确');
+            //
+            //     return
+            // }
+            _$.cookie(questionId, persons.length);
             _$("#userInfoTable").bootstrapTable('removeAll');
             //传入参数
             for (var i = 0; i < persons.length; i++) {
+                persons[i] = mapper(persons[i]);
+                persons[i].no = i + 1;
                 _$("#userInfoTable").bootstrapTable('insertRow', {index: i, row: persons[i]});
                 if (i == persons.length - 1) {
                     if (files) {
@@ -460,7 +587,9 @@ function layOutSend() {
                 }
             });
         }
-    } else if (sendType == '1') {   //邮箱发送方式
+    }
+    else if (sendType == '1') {
+        //邮箱发送方式
         //邮件标题
         var emailTitle = document.getElementById("ctl02_ContentPlaceHolder1_txtEmailTitle").value;
         //邮件发送富文本内容
@@ -527,6 +656,53 @@ function layOutSend() {
             });
         }
     }
+    else if(sendType == '3') {
+        //qq
+
+        var p = {
+            url: 'http://localhost:8085/previewQuestionnaire.html?id=' + questionId,/*获取URL，可加上来自分享到QQ标识，方便统计*/
+            desc: '来自问卷星的分享', /*分享理由(风格应模拟用户对话),支持多分享语随机展现（使用|分隔）*/
+            // title : title,/*分享标题(可选)*/
+            // summary : title,/*分享描述(可选)*/
+            // pics : pic,/*分享图片(可选)*/
+            // flash : '', /*视频地址(可选)*/
+            //commonClient : true, /*客户端嵌入标志*/
+            site: '问卷星'/*分享来源 (可选) ，如：QQ分享*/
+        };
+
+        var s = [];
+        for (var i in p) {
+            s.push(i + '=' + encodeURIComponent(p[i] || ''));
+        }
+
+        var target_url = "http://connect.qq.com/widget/shareqq/iframe_index.html?" + s.join('&') ;
+        window.open(target_url, 'qq',
+            'height=520, width=720');
+
+    }
+    else if(sendType == '4'){
+        //微信
+        var p = {
+            url: 'http://localhost:8085/previewQuestionnaire.html?id=' + questionId,/*获取URL，可加上来自分享到QQ标识，方便统计*/
+            desc: '来自问卷星的分享', /*分享理由(风格应模拟用户对话),支持多分享语随机展现（使用|分隔）*/
+            // title : title,/*分享标题(可选)*/
+            // summary : title,/*分享描述(可选)*/
+            // pics : pic,/*分享图片(可选)*/
+            // flash : '', /*视频地址(可选)*/
+            //commonClient : true, /*客户端嵌入标志*/
+            site: '问卷星'/*分享来源 (可选) ，如：QQ分享*/
+        };
+
+        var s = [];
+        for (var i in p) {
+            s.push(i + '=' + encodeURIComponent(p[i] || ''));
+        }
+
+        var target_url = "http://connect.qq.com/widget/shareqq/iframe_index.html?" + s.join('&') ;
+        window.open(target_url, 'qq',
+            'height=520, width=720');
+    }
+
 }
 
 //保存问卷信息
@@ -609,34 +785,45 @@ function layOutHold(falg) {
 //生成二维码
 function getQrcode() {
     _$("#ctl02_ContentPlaceHolder1_imgQrcode").empty();
-    var url = '/getShortUrlForLink';
-    var da = {
-        'id': questionId,
-        'link': "222"
-    };
-    // //console.log(da);
-    _$.ajax({
-        url: httpRequestUrl + url,
-        type: "POST",
-        data: JSON.stringify(da),
-        dataType: "json",
-        contentType: "application/json",
-        success: function (res) {
-            // //console.log(res);
-            var resData = JSON.parse(res.data);
-            shortUrl = resData.tinyurl;
-            document.getElementById('ctl02_ContentPlaceHolder1_txtLink').value = shortUrl;
-            // $('#code').qrcode(); //任意字符串
-            _$("#ctl02_ContentPlaceHolder1_imgQrcode").qrcode({
-                width: 100, //宽度
-                height: 100, //高度
-                text: shortUrl    //任意内容
-            })
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            // alert(jqXHR);
-        },
+
+    var url = "http://localhost:8085/previewQuestionnaire.html?id=" + questionId;
+
+    document.getElementById('ctl02_ContentPlaceHolder1_txtLink').value = url;
+
+    _$("#ctl02_ContentPlaceHolder1_imgQrcode").qrcode({
+        width: 100, //宽度
+        height: 100, //高度
+        text: url    //任意内容
     });
+
+    // var url = '/getShortUrlForLink';
+    // var da = {
+    //     'id': questionId,
+    //     'link': "222"
+    // };
+    // //console.log(da);
+    // _$.ajax({
+    //     url: httpRequestUrl + url,
+    //     type: "POST",
+    //     data: JSON.stringify(da),
+    //     dataType: "json",
+    //     contentType: "application/json",
+    //     success: function (res) {
+    //         // //console.log(res);
+    //         var resData = JSON.parse(res.data);
+    //         shortUrl = resData.tinyurl;
+    //         document.getElementById('ctl02_ContentPlaceHolder1_txtLink').value = shortUrl;
+    //         // $('#code').qrcode(); //任意字符串
+    //         _$("#ctl02_ContentPlaceHolder1_imgQrcode").qrcode({
+    //             width: 100, //宽度
+    //             height: 100, //高度
+    //             text: shortUrl    //任意内容
+    //         })
+    //     },
+    //     error: function (jqXHR, textStatus, errorThrown) {
+    //         // alert(jqXHR);
+    //     },
+    // });
 }
 
 function gotoPreview() {

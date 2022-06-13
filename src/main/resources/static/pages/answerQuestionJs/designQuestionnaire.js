@@ -5,7 +5,7 @@ var questionList = [];    //所有题和选项
 var questionTitles = '';   //所有的题目
 var questionInfo = '';
 var projectId = '';
-var dataId = '';
+var dataId = getCookie('dataId');
 var endTime = '';
 var startTime = '';
 var questionIdForChange = '';
@@ -14,14 +14,14 @@ var questionStop = '';
 //判断cookie里有没有问卷id、项目id
 var aaa = 0;
 var bbb = 0;
-var questionId
+var questionId = getCookie('questionnaireId');
 $(function () {
     console.log(getCookie("QuestionId"));
     deleteCookie('previewId');
     var urlObj = GetRequest();
     if (Object.keys(urlObj).length == 0) {
         setCookie('QuestionId', getCookie("QuestionId"));
-        var da = {'id': getCookie("QuestionId")};
+        var da = {'id': getCookie("questionId")};
         console.log(getCookie("QuestionId"));
     } else {
         deleteCookie('QuestionId');
@@ -43,8 +43,8 @@ $(function () {
         var da = {'id': questionId};
     }
 
-    var url = '/queryQuestionnaireAll';
-    //commonAjaxPost(true, url, da, queryQuestionnaireAllSuccess);
+    var url = '/queryQuestionnaireById';
+    commonAjaxPost(true, url, da, queryQuestionnaireAllSuccess);
 
 });
 
@@ -943,7 +943,7 @@ function insertQuestion(that) {
 //全部编辑完成按钮
 function editFinish() {
     getQuestion();
-    if (questionList.length == 0) {
+    if (questionList.length === 0) {
         layer.msg("没有题不能保存");
     } else {
         for (var i = 0; i < questionList.length; i++) {
@@ -958,19 +958,18 @@ function editFinish() {
         var questionName = $('.questionTitle').text();
         //获取问卷说明
         var questionContent = $('#pater_desc').html();
-        var da = '';
-        var url = '';
-        da = {
-            'questionList': questionList,
-            'questionTitle': questionTitles, //所有的题目
-            'questionId': questionId,
+        var url = '/modifyQuestionnaireInfo';
+        var da = {
+            'question': JSON.stringify(questionList), //所有的题目
+            'questionTitle': questionTitles,
+            'id': questionId,
             'dataId': dataId,
             'questionName': questionName,
             'questionContent': questionContent,
-            'endTime': ''
+            // 'endTime': ''
         };
-        var urlQ = '/modifyQuestionnaire';
-        commonAjaxPost(true, urlQ, da, addQuestionnaireSuccess)
+        console.log(da);
+        commonAjaxPost(true, url, da, addQuestionnaireSuccess)
     }
 }
 
@@ -1193,14 +1192,14 @@ function addQuestionnaireSuccess(res) {
 function queryQuestionnaireAllSuccess(res) {
     console.log(res);
     deleteCookie('questionList');
-    if (res.code == '666') {
+    if (res.code === '666') {
         // alert("查询问卷详情成功");
         //查询的是历史问卷
         questionIdForChange = res.data.id;
         dataId = res.data.dataId;
         console.log(res.data.questionName);
-        $('.questionTitle').text(res.data.questionName); //问卷名称
-        $('#pater_desc').html(res.data.questionContent);//问卷说明
+        $('#questionTitle').text(res.data.questionName); //问卷名称
+        $('#pater_desc').text(res.data.questionContent);//问卷说明
         if (res.data.questionStop == '4' || res.data.questionStop == '0') {
             if (getCookie('isEdit') != '1') {
                 deleteCookie('QuestionId');
@@ -1208,7 +1207,7 @@ function queryQuestionnaireAllSuccess(res) {
                 $('.questionTitle').text(questionInfo.questionName); //问卷名称
                 $('#pater_desc').html(questionInfo.questionContent);//问卷说明
             }
-        } else if (res.data.questionStop == '5') {
+        } else if (res.data.questionStop === '5') {
             endTime = res.data.endTime;
             startTime = res.data.startTime;
             questionStop = res.data.questionStop;
@@ -1221,7 +1220,7 @@ function queryQuestionnaireAllSuccess(res) {
                 showQuestion(question[i]);
             }
         }
-    } else if (result.code == "333") {
+    } else if (result.code === "333") {
         layer.msg(res.message, {icon: 2});
         setTimeout(function () {
             window.location.href = 'login.html';

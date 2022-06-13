@@ -3,12 +3,34 @@ var questionList = [];
 var timeStart = '';
 var id = '';
 var contact = '';
-var eORp = 'zzz';     //判断是邮箱还是手机号还是连接
+var eORp = '';     //判断是邮箱还是手机号还是连接
 var flag = "false";
 
 var previewType = getCookie("previewType");
 
+function getQueryVariable(variable)
+{
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i=0;i<vars.length;i++) {
+        var pair = vars[i].split("=");
+        if(pair[0] == variable){return pair[1];}
+    }
+    return(false);
+}
+
 $(function () {
+
+    timeStart = (new Date()).Format("yyyy/M/d h:m:s");
+
+    id = getQueryVariable('id');
+
+    if(id === false) {
+        eORp = 'zzz';
+        id = getCookie("questionId");
+    }
+
+
     $("#layui-layer1").css('top','45%');
     $("#layui-layer1").css('left','45%');
 
@@ -19,21 +41,24 @@ $(function () {
     timeStart = (new Date()).Format("yyyy/M/d h:m:s");
     //判断有没有答过
     var url = '/queryQuestionnaireById';
-    var da = {'questionId':id};
-    if (eORp != 'zzz') {
-        if (eORp == 'p') {
-            da.phone = contact;
-        } else if (eORp == "e") {
-            da.answerEmail = contact;
-        }
-        //查询题目信息
-        commonAjaxPost(true, url, da, queryQuestionnaireByIdSuccess);
-    } else {
-        //查询题目信息
-        commonAjaxPost(true, url, da, queryQuestionnaireByIdSuccess);
-    }
+    var da = {'id': id};
+    // if (eORp != 'zzz') {
+    //     if (eORp == 'p') {
+    //         da.phone = contact;
+    //     } else if (eORp == "e") {
+    //         da.answerEmail = contact;
+    //     }
+    //     //查询题目信息
+    //     commonAjaxPost(true, url, da, queryQuestionnaireByIdSuccess);
+    // } else {
+    //     //查询题目信息
+    //     commonAjaxPost(true, url, da, queryQuestionnaireByIdSuccess);
+    // }
+
+    commonAjaxPost(true, url, da, queryQuestionnaireByIdSuccess);
 
 });
+
 
 //提交答案
 function submitQuestionnaire() {
@@ -43,7 +68,7 @@ function submitQuestionnaire() {
     } else {
         //获取答题结束时间
         var timeEnd = (new Date()).Format("yyyy/M/d h:m:s");
-        var ipAddress = returnCitySN["cip"];     //获取ip
+        // var ipAddress = returnCitySN["cip"];     //获取ip
         var questionNum = $(".container-fluidT").find(".form-group").length;
         var answerList = [];
         var qAnswer = '';
@@ -171,13 +196,7 @@ function submitQuestionnaire() {
             success: function (data) {
             }
         });
-        var da = {
-            'questionId': id,
-            'answerList': answerListFinal,
-            'answerTime': dateChange(timeStart),
-            'endTime': dateChange(timeEnd),
-            'ipAddress': ipAddress
-        };
+
         if (eORp == 'p') {
             da.answerPhone = contact;
             da.answerSource = 'phone';
@@ -186,11 +205,38 @@ function submitQuestionnaire() {
             da.answerSource = 'email';
         } else if (eORp == "l") {
             da.answerSource = 'link';
-        } else {
+        } else if(eORp != "") {
             alert("预览状态不支持答题")
         }
-        var url = '/addAnswerQuestionnaire';
-        commonAjaxPost(false, url, da, addSuccess,addError)
+
+        const thisAnswer = {
+            'answerList': answerListFinal,
+            'answerStartTime': dateChange(timeStart),
+            'answerEndTime': dateChange(timeEnd),
+        };
+
+        var allAnswer;
+        commonAjaxPost(false, "/queryQuestionnaireById", {id: id}, function (result) {
+            if (result.code === "666") {
+                var data = result.data;
+                allAnswer = JSON.parse(data.answerTotal);
+            } else {
+                layer.msg(result.msg);
+            }
+        });
+
+        console.log(allAnswer)
+
+        allAnswer.push(thisAnswer);
+
+        var da = {
+            'id': id,
+            'answerTotal': JSON.stringify(allAnswer),
+            // 'ipAddress': ipAddress
+        };
+
+        var url = '/modifyQuestionnaireInfo';
+        commonAjaxPost(false, url, da, addSuccess, addError)
    }
 }
 
@@ -203,8 +249,8 @@ function addSuccess(res) {
     // location.reload();
     console.log(res)
     if (res.code == '666') {
-        alert(res.data);
-        $('.questionnaire').html('<p style="width: 60%; margin: 200px auto;text-align: center;font-size: 16px;">' + res.data + '</p>')
+        alert("提交成功");
+        $('.questionnaire').html('<p style="width: 60%; margin: 200px auto;text-align: center;font-size: 16px;">' + "提交成功" + '</p>')
     } else {
         alert(res.message);
     }
@@ -246,8 +292,13 @@ function setQuestion(result) {
         $('#questionnaireTittle1').html(result.data.questionName);
     }
 
+    // debugger
+
     $('.officialTips').html(result.data.questionContent);
-    questionList = result.data.questionList;
+    questionList = JSON.parse(result.data.question);
+
+    console.log(questionList)
+
     if(questionList!=null) {
         for (var i = 0; i < questionList.length; i++) {
             var questionType = questionList[i].questionType;
@@ -363,7 +414,7 @@ function setQuestion(result) {
     $(".container-fluidT").append('<div>\n' +
         '            <button class="btn btn-primary submitBtn" onclick="submitQuestionnaire()">提交</button>\n' +
         '        </div>');
-};
+}
 
 
 //获取地址栏上的问卷id    进页面
